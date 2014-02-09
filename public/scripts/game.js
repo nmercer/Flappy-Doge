@@ -81,8 +81,10 @@ window.addEventListener("load", function (e) {
         },
 
         step: function(p) {
-            Q.state.inc("score", 100);
-            this.p.label = Q.state.get("score").toString();
+            if(!Q.state.get('game_over')) {
+                Q.state.inc("score", 100);
+                this.p.label = Q.state.get("score").toString();
+            }
         }
     });
 
@@ -176,6 +178,7 @@ window.addEventListener("load", function (e) {
 
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) { 
+                    Q.state.set("game_over", true);
                     Q.stageScene("endGame",1, { label: "You Died" }); 
                     collision.obj.destroy();
                 }
@@ -190,7 +193,8 @@ window.addEventListener("load", function (e) {
         }
     })
 
-    Q.state.reset({ score: 0 });
+    Q.state.reset({ score: 0, game_over: false});
+
     Q.load("doge.png, asteroid.png, space-bkg.jpg, coin.png", function() {
         Q.stageScene("Level1");
     });
