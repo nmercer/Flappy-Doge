@@ -1,6 +1,8 @@
 
 window.addEventListener("load", function (e) {
 
+    var $score = document.getElementById("score");
+
     var Q = window.Q = Quintus()
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX")
         .setup({
@@ -15,8 +17,6 @@ window.addEventListener("load", function (e) {
         //stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 1, speedY: 1, type: 0 }));
         var player = stage.insert(new Q.Doge());
         var asteroid = stage.insert(new Q.Asteroid());
-
-        var score = stage.insert(new Q.Score());
 
         var counter = 1;
         var coin_counter = 1;
@@ -41,11 +41,17 @@ window.addEventListener("load", function (e) {
                     y: Math.floor(Math.random() * Q.height) + 1,
                 }));
             }
+
+            if(!Q.state.get('game_over')) {
+                Q.state.inc("score", 100);
+                $score.innerHTML = Q.state.get("score");
+            }
+
+
         });
 
         stage.add("viewport").follow(player, { x: true, y: false });
-
-        console.log(stage)
+        
 
     });
 
@@ -70,26 +76,6 @@ window.addEventListener("load", function (e) {
       
         // Expand the container to visibily fit it's contents
         container.fit(20);
-    });
-
-    // SCORE
-    // ===============================================
-    Q.UI.Text.extend("Score", {
-        init:function(p) {
-            this._super(p, {
-                label: "0",
-                color: "white",
-                x: Q.width/2,
-                y: 280
-            });
-        },
-
-        step: function(p) {
-            if(!Q.state.get('game_over')) {
-                Q.state.inc("score", 100);
-                this.p.label = Q.state.get("score").toString();
-            }
-        }
     });
 
     // WOW
@@ -135,8 +121,11 @@ window.addEventListener("load", function (e) {
             if(Q.inputs['fire']) { 
                 this.p.vy = -500;
             }
-            if(this.p.y > Q.height) {
+            if(this.p.y - 100 > Q.height) {
                 Q.stageScene("endGame", 1, { label: "You Fell!" });
+            }
+            if(this.p.y < 0) {
+                this.p.y = 0;
             }
         }
     });
@@ -151,7 +140,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: .5
+                scale: .2
             });
 
             this.on("hit.sprite", function(collision) {
@@ -180,7 +169,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: 2
+                scale: 2.3
             });
 
             this.on("hit.sprite", function(collision) {
