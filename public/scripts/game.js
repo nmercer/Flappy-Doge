@@ -129,6 +129,7 @@ window.addEventListener("load", function (e) {
                 speed: 300,
                 x: Q.width / 2, 
                 y: 300,
+                scale: 0.5
             });
             this.add('2d');
         },
@@ -152,6 +153,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
+                scale: .5
             });
 
             this.on("hit.sprite", function(collision) {
@@ -180,6 +182,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
+                scale: 2
             });
 
             this.on("hit.sprite", function(collision) {
