@@ -121,8 +121,11 @@ window.addEventListener("load", function (e) {
             if(Q.inputs['fire']) { 
                 this.p.vy = -500;
             }
-            if(this.p.y > Q.height) {
+            if(this.p.y - 100 > Q.height) {
                 Q.stageScene("endGame", 1, { label: "You Fell!" });
+            }
+            if(this.p.y < 0) {
+                this.p.y = 0;
             }
         }
     });
@@ -137,7 +140,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: .5
+                scale: .2
             });
 
             this.on("hit.sprite", function(collision) {
@@ -166,7 +169,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: 2
+                scale: 2.3
             });
 
             this.on("hit.sprite", function(collision) {
