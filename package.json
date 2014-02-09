@@ -1,0 +1,14 @@
+{
+    "name": "Quintus-NodeJS-Template",
+    "scripts": {
+        "start": "app.js"
+    },
+    "version": "0.0.1",
+    "engines": {
+        "node": "0.10.x"
+    },
+    "dependencies": {
+        "express": "3.3.4",
+        "socket.io": "0.9.x"
+    }
+}
