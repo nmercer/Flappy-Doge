@@ -50,15 +50,15 @@ window.addEventListener("load", function (e) {
 
     // GAME OVER SCREEN
     // ===============================================
-    Q.scene('endGame',function(stage) {
+    Q.scene('endGame', function(stage) {
         var container = stage.insert(new Q.UI.Container({
             x: Q.width/2, y: Q.height/2, fill: "rgba(255,255,255,0.8)"
         }));
       
-        var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
-                                                      label: "Play Again" }))         
+        var button = container.insert(new Q.UI.Button({x: 0, y: 0, fill: "#CCCCCC",
+                                                      label: "Play Again"}))
         var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, 
-                                                       label: stage.options.label }));
+                                                    label: stage.options.label }));
         // When the button is clicked, clear all the stages
         // and restart the game.
         button.on("click", function() {
@@ -109,8 +109,6 @@ window.addEventListener("load", function (e) {
 
         step: function(p) {
             this.p.counter += 1;
-
-            console.log(this.p.counter);
 
             if ((this.p.counter % 50) === 0) {
                 this.destroy();
