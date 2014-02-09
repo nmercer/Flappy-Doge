@@ -6,11 +6,13 @@ window.addEventListener("load", function (e) {
             maximize: true
         });
 
-    Q.scene("helloWorld", function (stage) {
+
+
+    Q.scene("Space", function (stage) {
         var box = stage.insert(new Q.UI.Container({
             x: Q.width / 2,
             y: Q.height / 2,
-            fill: "rgba(0,0,0,0.5)"
+            fill: "rgba(0,0,0,0.9)"
         }));
 
         var button = box.insert(new Q.UI.Button({
@@ -25,8 +27,21 @@ window.addEventListener("load", function (e) {
         box.fit(20);
     });
 
+
+    Q.Sprite.extend("Doge",{
+      init: function(p) {
+        this._super(p, {
+            hitPoints: 10,
+            damage: 5,
+            x: 5,
+            y: 1
+        });
+    }   
+    });
+
+
     Q.load("doge.png", function () {
-        Q.stageScene("helloWorld");
+        Q.stageScene("Space");
     });
 
 });
