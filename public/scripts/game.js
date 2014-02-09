@@ -17,21 +17,29 @@ window.addEventListener("load", function (e) {
 
         var score = stage.insert(new Q.Score());
 
-        var counter = 1
+        var counter = 1;
+        var coin_counter = 1;
+
         stage.on("step",function() {
             counter += 1;
 
             if ((counter % 50) === 0) {
                 counter = 1;
-
-                var random = Math.floor(Math.random() * Q.height) + 1
-                console.log(random)
-
                 stage.insert(new Q.Asteroid({ 
-                    y: random,
+                    y: Math.floor(Math.random() * Q.height) + 1,
                 }));
+
+                coin_counter += 1;
             }
 
+            // Todo - Make this more random
+            if ((coin_counter % 5) === 0) {
+                coin_counter = 1;
+
+                stage.insert(new Q.Coin({ 
+                    y: Math.floor(Math.random() * Q.height) + 1,
+                }));
+            }
         });
 
         stage.add("viewport").follow(player, { x: true, y: false });
@@ -60,6 +68,8 @@ window.addEventListener("load", function (e) {
         container.fit(20);
     });
 
+    // SCORE
+    // ===============================================
     Q.UI.Text.extend("Score", {
         init:function(p) {
             this._super(p, {
@@ -71,7 +81,8 @@ window.addEventListener("load", function (e) {
         },
 
         step: function(p) {
-            this.p.label = (parseInt(this.p.label) + 100).toString();
+            Q.state.inc("score", 100);
+            this.p.label = Q.state.get("score").toString();
         }
     });
 
@@ -96,6 +107,33 @@ window.addEventListener("load", function (e) {
         }
     });
 
+    // COIN
+    // ===============================================
+    Q.Sprite.extend("Coin", {
+        init: function(p) {
+            this._super(p, {
+                asset: "coin.png",
+                x: Q.width+50,
+                y: 500,
+                vy: 0,
+                vx: -400,
+            });
+
+            this.on("hit.sprite", function(collision) {
+                if(collision.obj.isA("Doge")) { 
+                    Q.state.inc("score", 1000000);
+                    this.destroy();
+                }
+            });
+        },
+
+        step: function(dt) {
+            this.p.x += this.p.vx * dt;
+            this.p.y += this.p.vy * dt;
+            // Todo - Destroy these when they are past a certain part of the screen
+        }
+    })
+
     // ENEMY
     // ===============================================
     Q.Sprite.extend("Asteroid", {
@@ -119,10 +157,13 @@ window.addEventListener("load", function (e) {
         step: function(dt) {
             this.p.x += this.p.vx * dt;
             this.p.y += this.p.vy * dt;
+
+            // Todo - Destroy these when they are past a certain part of the screen
         }
     })
 
-    Q.load("doge.png, asteroid.png, space-bkg.jpg", function() {
+    Q.state.reset({ score: 0 });
+    Q.load("doge.png, asteroid.png, space-bkg.jpg, coin.png", function() {
         Q.stageScene("Level1");
     });
 
