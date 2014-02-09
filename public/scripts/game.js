@@ -89,6 +89,33 @@ window.addEventListener("load", function (e) {
         }
     });
 
+    // WOW
+    // ===============================================
+    Q.UI.Text.extend("Wow", {
+        init:function(p) {
+            var wow_choices = ["wow", "To The Moon!", "Much Coin", "Very Win"]; // Todo - Add way more
+
+            // Todo - Spawn these in random places, effects?
+            this._super(p, {
+                label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
+                color: "white",
+                x: Q.width/2,
+                y: 100,
+                counter: 1,
+            });
+        },
+
+        step: function(p) {
+            this.p.counter += 1;
+
+            console.log(this.p.counter);
+
+            if ((this.p.counter % 50) === 0) {
+                this.destroy();
+            }
+        }
+    });
+
     // PLAYER
     // ===============================================
     Q.Sprite.extend("Doge", {
@@ -127,6 +154,7 @@ window.addEventListener("load", function (e) {
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) { 
                     Q.state.inc("score", 1000000);
+                    this.stage.insert(new Q.Wow());
                     this.destroy();
                 }
             });
