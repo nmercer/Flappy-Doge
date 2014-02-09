@@ -210,16 +210,11 @@ window.addEventListener("load", function (e) {
     var sy = new Array(100);
     var ss = new Array(100);
     
-    for(i=0;i<sx.length;i++){
+    for(i=0; i < sx.length; i++ ){
         sx[i]=Math.round(Math.random() * c.width);
         sy[i]=Math.round(Math.random() * c.height);
         ss[i]=Math.round(Math.random() * 1 + 1 );
     }
-    
-    (function animloop(){
-        requestAnimFrame(animloop);
-        doGameLoop();
-    })();
     
     function doGameLoop() {
         ctx.fillStyle="black";
@@ -237,5 +232,10 @@ window.addEventListener("load", function (e) {
             if( sx[i] < 0 ) sx[i] = c.width;
         }
     }
+
+    (function animloop(){
+        requestAnimFrame(animloop);
+        doGameLoop();
+    })();
 
 });
