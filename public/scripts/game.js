@@ -7,6 +7,8 @@ window.addEventListener("load", function (e) {
         })
         .controls()
 
+    // MAIN GAME
+    // ===============================================
     Q.scene("Level1", function (stage) {
         var player = stage.insert(new Q.Doge());
         var container = stage.insert(new Q.UI.Container({
@@ -27,28 +29,65 @@ window.addEventListener("load", function (e) {
         container.fit(120,120);
     });
 
+    // GAME OVER SCREEN
+    // ===============================================
+    Q.scene('endGame',function(stage) {
+        var container = stage.insert(new Q.UI.Container({
+            x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+        }));
+      
+        var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                      label: "Play Again" }))         
+        var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, 
+                                                       label: stage.options.label }));
+        // When the button is clicked, clear all the stages
+        // and restart the game.
+        button.on("click",function() {
+            Q.clearStages();
+            Q.stageScene('level1');
+        });
+      
+        // Expand the container to visibily fit it's contents
+        container.fit(20);
+    });
+
+
+    // PLAYER
+    // ===============================================
     Q.Sprite.extend("Doge", {
       init:function(p) {
         this._super(p, {
           asset: "doge.png",
           jumpSpeed: -400,
           speed: 300,
-          x: 0, 
+          x: Q.width / 2, 
           y: 300,
         });
         this.add('2d');
     },
-      
       step: function(p) {
-        
-        console.log(Q.inputs)
-
         if(Q.inputs['fire']) { 
           this.p.vy = -500;
         }
       }
-
     });
+
+    // ENEMY
+    // ===============================================
+    Q.Sprite.extend("Asteroid", {
+        init: function(p) {
+            this._super(p, {
+                asset: "asteroid.png",
+            })
+
+            this.on("bump.left, bump.right, bump.bottom, bump.top", function(collision) {
+                if(collision.obj.isA("Doge")) { 
+                    Q.stageScene("endGame",1, { label: "You Died" }); 
+                    collision.obj.destroy();
+                }
+            });
+        }
+    })
 
     Q.load("doge.png",function() {
         Q.stageScene("Level1");
