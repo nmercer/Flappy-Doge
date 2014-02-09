@@ -11,6 +11,8 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.scene("Level1", function (stage) {
         var player = stage.insert(new Q.Doge());
+        var asteroid = stage.insert(new Q.Asteroid());
+
         var container = stage.insert(new Q.UI.Container({
           fill: "gray",
           border: 5,
@@ -21,11 +23,12 @@ window.addEventListener("load", function (e) {
         }));
 
         stage.insert(new Q.UI.Text({ 
-      label: "Here's a label\nin a container",
-      color: "white",
-      x: 0,
-      y: 0
-    }),container);
+            label: "Here's a label\nin a container",
+            color: "white",
+            x: 0,
+            y: 0
+            }),container);
+
         container.fit(120,120);
     });
 
@@ -78,7 +81,11 @@ window.addEventListener("load", function (e) {
         init: function(p) {
             this._super(p, {
                 asset: "asteroid.png",
-            })
+                x: 0, 
+                y: 300,
+                vy: -400
+            });
+
 
             this.on("bump.left, bump.right, bump.bottom, bump.top", function(collision) {
                 if(collision.obj.isA("Doge")) { 
@@ -86,10 +93,13 @@ window.addEventListener("load", function (e) {
                     collision.obj.destroy();
                 }
             });
+        },
+        step: function(p) {
+
         }
     })
 
-    Q.load("doge.png",function() {
+    Q.load(["doge.png", "asteroid.png"],function() {
         Q.stageScene("Level1");
         // run the game
     });
