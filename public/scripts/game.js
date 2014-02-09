@@ -8,7 +8,7 @@ window.addEventListener("load", function (e) {
 
 
 
-    Q.scene("Space", function (stage) {
+    Q.scene("Level1", function (stage) {
         var box = stage.insert(new Q.UI.Container({
             x: Q.width / 2,
             y: Q.height / 2,
@@ -24,7 +24,7 @@ window.addEventListener("load", function (e) {
             label: "Hello World!"
         }));
 
-        box.fit(20);
+        box.fit(100);
     });
 
 
@@ -41,7 +41,7 @@ window.addEventListener("load", function (e) {
 
 
     Q.load("doge.png", function () {
-        Q.stageScene("Space");
+        Q.stageScene("Level1");
     });
 
 });
