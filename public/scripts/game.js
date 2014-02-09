@@ -13,6 +13,27 @@ window.addEventListener("load", function (e) {
         // Background
         //stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 1, speedY: 1, type: 0 }));
         var player = stage.insert(new Q.Doge());
+        var asteroid = stage.insert(new Q.Asteroid());
+
+        var score = stage.insert(new Q.Score());
+
+        var counter = 1
+        stage.on("step",function() {
+            counter += 1;
+
+            if ((counter % 50) === 0) {
+                counter = 1;
+
+                var random = Math.floor(Math.random() * Q.height) + 1
+                console.log(random)
+
+                stage.insert(new Q.Asteroid({ 
+                    y: random,
+                }));
+            }
+
+        });
+
         stage.add("viewport").follow(player, { x: true, y: false });
 
         console.log(stage)
@@ -42,6 +63,20 @@ window.addEventListener("load", function (e) {
         container.fit(20);
     });
 
+    Q.UI.Text.extend("Score", {
+        init:function(p) {
+            this._super(p, {
+                label: "0",
+                color: "white",
+                x: Q.width/2,
+                y: 280
+            });
+        },
+
+        step: function(p) {
+            this.p.label = (parseInt(this.p.label) + 100).toString();
+        }
+    });
 
     // PLAYER
     // ===============================================
@@ -73,7 +108,11 @@ window.addEventListener("load", function (e) {
         init: function(p) {
             this._super(p, {
                 asset: "asteroid.png",
-            })
+                x: Q.width+50,
+                y: 500,
+                vy: 0,
+                vx: -400,
+            });
 
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) { 
@@ -81,6 +120,11 @@ window.addEventListener("load", function (e) {
                     collision.obj.destroy();
                 }
             });
+        },
+
+        step: function(dt) {
+            this.p.x += this.p.vx * dt;
+            this.p.y += this.p.vy * dt;
         }
     })
 
