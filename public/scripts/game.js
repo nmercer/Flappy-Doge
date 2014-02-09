@@ -88,7 +88,6 @@ window.addEventListener("load", function (e) {
                 speed: 300,
                 x: Q.width / 2, 
                 y: 300,
-                vx: 10,
             });
             this.add('2d');
         },
@@ -128,38 +127,43 @@ window.addEventListener("load", function (e) {
         }
     })
 
+    // INITIALIZE DOGE GAME
     Q.load("doge.png, asteroid.png, space-bkg.jpg", function() {
         Q.stageScene("Level1");
     });
 
-    // // BACKGROUND
-    // // ===============================================
-    // Q.UI.extend("StarField", {
-    //     sx: new Array(100),
-    //     sy: new Array(100),
-    //     ss: new Array(100),
+    // STARS (refactor this bullshit)
+    // ===============================================
+    var c=document.getElementById("star_field");
+    var ctx=c.getContext("2d");
+    var sx = new Array(100);
+    var sy = new Array(100);
+    var ss = new Array(100);
+    
+    for(i=0;i<sx.length;i++){
+        sx[i]=Math.round(Math.random()*c.width);
+        sy[i]=Math.round(Math.random()*c.height);
+        ss[i]=Math.round(Math.random()* 1 + 1 );
+    }
+    
+    gameloop=setInterval(doGameLoop,16);
+    function doGameLoop(){
+        ctx.fillStyle="black";
+        ctx.fillRect(0,0,c.width,c.height);
+        // Draw the stars.
+        ctx.fillStyle="white";
+        for(i=0;i<sx.length;i++){
+            ctx.fillRect(sx[i],sy[i],2,2);
+        }
+        // Update the stars position.
+        for(i=0;i<sx.length;i++){
+            sx[i]-=ss[i];
+            if(sx[i]<0) sx[i]=c.width;
+        }
+    }
 
-    //     init: function(p) {
-            
-    //         for(i = 0; i < this.sx.length; i++) {
-    //             this.sx[i] = Math.round( Math.random() * this.starCanvas.width );
-    //             this.sy[i] = Math.round( Math.random() * this.starCanvas.height );
-    //             this.ss[i] = Math.round( Math.random() * 3 + 1 );
-    //         }
-    //         this.ctx.fillStyle = "black";
-    //         this.ctx.fillRect(0,0, this.starCanvas.width, this.starCanvas.height);
-            
-    //         // Draw the stars.
-    //         this.ctx.fillStyle = "white";
-    //         for( i = 0; i < this.sx.length ;i++){
-    //             this.ctx.fillRect(this.sx[i], this.sy[i], 2, 2);
-    //         }
-    //         // Update the stars position.
-    //         for( i = 0; i < this.sx.length; i++){
-    //             this.sx[i] -= this.ss[i];
-    //             if( this.sx[i] < 0 ) this.sx[i] = this.starCanvas.width;
-    //         }
-    //     },
 
-    // })
+
+
+
 });
