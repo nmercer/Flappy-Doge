@@ -15,6 +15,8 @@ window.addEventListener("load", function (e) {
         var player = stage.insert(new Q.Doge());
         stage.add("viewport").follow(player, { x: true, y: false });
 
+        console.log(stage)
+
     });
 
     // GAME OVER SCREEN
@@ -30,9 +32,13 @@ window.addEventListener("load", function (e) {
                                                        label: stage.options.label }));
         // When the button is clicked, clear all the stages
         // and restart the game.
-        button.on("click",function() {
+        
+        console.log(button)
+
+        button.on("click", function() {
+            console.log('clicked')
             Q.clearStages();
-            Q.stageScene('level1');
+            Q.stageScene('Level1');
         });
       
         // Expand the container to visibily fit it's contents
@@ -57,6 +63,9 @@ window.addEventListener("load", function (e) {
         step: function(p) {
             if(Q.inputs['fire']) { 
                 this.p.vy = -500;
+            }
+            if(this.p.y > Q.height) {
+                Q.stageScene("endGame", 1, { label: "You Fell!" });
             }
         }
     });
