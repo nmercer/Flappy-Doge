@@ -1,6 +1,8 @@
 
 window.addEventListener("load", function (e) {
 
+    var $score = document.getElementById("score");
+
     var Q = window.Q = Quintus()
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX")
         .setup({
@@ -15,8 +17,6 @@ window.addEventListener("load", function (e) {
         //stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 1, speedY: 1, type: 0 }));
         var player = stage.insert(new Q.Doge());
         var asteroid = stage.insert(new Q.Asteroid());
-
-        var score = stage.insert(new Q.Score());
 
         var counter = 1;
         var coin_counter = 1;
@@ -41,11 +41,17 @@ window.addEventListener("load", function (e) {
                     y: Math.floor(Math.random() * Q.height) + 1,
                 }));
             }
+
+            if(!Q.state.get('game_over')) {
+                Q.state.inc("score", 100);
+                $score.innerHTML = Q.state.get("score");
+            }
+
+
         });
 
         stage.add("viewport").follow(player, { x: true, y: false });
-
-        console.log(stage)
+        
 
     });
 
@@ -72,26 +78,6 @@ window.addEventListener("load", function (e) {
         container.fit(20);
     });
 
-    // SCORE
-    // ===============================================
-    Q.UI.Text.extend("Score", {
-        init:function(p) {
-            this._super(p, {
-                label: "0",
-                color: "white",
-                x: Q.width/2,
-                y: 280
-            });
-        },
-
-        step: function(p) {
-            if(!Q.state.get('game_over')) {
-                Q.state.inc("score", 100);
-                this.p.label = Q.state.get("score").toString();
-            }
-        }
-    });
-
     // WOW
     // ===============================================
     Q.UI.Text.extend("Wow", {
@@ -110,8 +96,6 @@ window.addEventListener("load", function (e) {
 
         step: function(p) {
             this.p.counter += 1;
-
-            console.log(this.p.counter);
 
             if ((this.p.counter % 50) === 0) {
                 this.destroy();

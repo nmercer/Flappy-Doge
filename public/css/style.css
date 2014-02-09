@@ -1,3 +1,6 @@
+body {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+}
 canvas {
 	background-color: transparent;
 }
@@ -6,4 +9,13 @@ canvas {
 	width: 100%!important;
 	height: 100%!important;
 	position: absolute;	
+}
+
+#stats {
+	height: 5%;
+	position: absolute;
+	bottom: 0;
+	background: gray;
+	color: white;
+	width: 100%;
 }
