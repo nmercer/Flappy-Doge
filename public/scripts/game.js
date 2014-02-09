@@ -11,7 +11,7 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.scene("Level1", function (stage) {
         // Background
-        stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 1, speedY: 1, type: 0 }));
+        //stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 1, speedY: 1, type: 0 }));
         var player = stage.insert(new Q.Doge());
         stage.add("viewport").follow(player, { x: true, y: false });
 
@@ -23,7 +23,7 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.scene('endGame',function(stage) {
         var container = stage.insert(new Q.UI.Container({
-            x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+            x: Q.width/2, y: Q.height/2, fill: "rgba(255,255,255,0.8)"
         }));
       
         var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
@@ -32,9 +32,6 @@ window.addEventListener("load", function (e) {
                                                        label: stage.options.label }));
         // When the button is clicked, clear all the stages
         // and restart the game.
-        
-        console.log(button)
-
         button.on("click", function() {
             console.log('clicked')
             Q.clearStages();
@@ -91,4 +88,34 @@ window.addEventListener("load", function (e) {
         Q.stageScene("Level1");
     });
 
+    // // BACKGROUND
+    // // ===============================================
+    // Q.UI.extend("StarField", {
+    //     sx: new Array(100),
+    //     sy: new Array(100),
+    //     ss: new Array(100),
+
+    //     init: function(p) {
+            
+    //         for(i = 0; i < this.sx.length; i++) {
+    //             this.sx[i] = Math.round( Math.random() * this.starCanvas.width );
+    //             this.sy[i] = Math.round( Math.random() * this.starCanvas.height );
+    //             this.ss[i] = Math.round( Math.random() * 3 + 1 );
+    //         }
+    //         this.ctx.fillStyle = "black";
+    //         this.ctx.fillRect(0,0, this.starCanvas.width, this.starCanvas.height);
+            
+    //         // Draw the stars.
+    //         this.ctx.fillStyle = "white";
+    //         for( i = 0; i < this.sx.length ;i++){
+    //             this.ctx.fillRect(this.sx[i], this.sy[i], 2, 2);
+    //         }
+    //         // Update the stars position.
+    //         for( i = 0; i < this.sx.length; i++){
+    //             this.sx[i] -= this.ss[i];
+    //             if( this.sx[i] < 0 ) this.sx[i] = this.starCanvas.width;
+    //         }
+    //     },
+
+    // })
 });
