@@ -11,30 +11,13 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.scene("Level1", function (stage) {
         // Background
-        stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 0.5, speedY: 0.5, type: 0 }));
-
+        stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 1, speedY: 1, type: 0 }));
         var player = stage.insert(new Q.Doge());
         var asteroid = stage.insert(new Q.Asteroid());
 
-        var container = stage.insert(new Q.UI.Container({
-            fill: "gray",
-            border: 5,
-            shadow: 10,
-            shadowColor: "rgba(0,0,0,0.5)",
-            y: 50,
-            x: Q.width/2 
-        }));
-
-        stage.insert(new Q.UI.Text({ 
-            label: "Here's a label\nin a container",
-            color: "white",
-            x: 0,
-            y: 0
-            }),container);
-        container.fit(120,120);
+        var score = stage.insert(new Q.Score());
 
         var counter = 1
-
         stage.on("step",function() {
             counter += 1;
 
@@ -50,6 +33,8 @@ window.addEventListener("load", function (e) {
             }
 
         });
+
+        stage.add("viewport").follow(player, { x: true, y: false });
 
     });
 
@@ -75,6 +60,20 @@ window.addEventListener("load", function (e) {
         container.fit(20);
     });
 
+    Q.UI.Text.extend("Score", {
+        init:function(p) {
+            this._super(p, {
+                label: "0",
+                color: "white",
+                x: Q.width/2,
+                y: 280
+            });
+        },
+
+        step: function(p) {
+            this.p.label = (parseInt(this.p.label) + 100).toString();
+        }
+    });
 
     // PLAYER
     // ===============================================
@@ -86,6 +85,7 @@ window.addEventListener("load", function (e) {
                 speed: 300,
                 x: Q.width / 2, 
                 y: 300,
+                vx: 10,
             });
             this.add('2d');
         },
@@ -108,7 +108,7 @@ window.addEventListener("load", function (e) {
                 vx: -400,
             });
 
-            this.on("bump.left, bump.right, bump.bottom, bump.top", function(collision) {
+            this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) { 
                     Q.stageScene("endGame",1, { label: "You Died" }); 
                     collision.obj.destroy();
