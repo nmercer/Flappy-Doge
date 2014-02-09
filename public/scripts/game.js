@@ -14,7 +14,7 @@ window.addEventListener("load", function (e) {
         }));
 
         var button = box.insert(new Q.UI.Button({
-            asset: 'enemy.png'
+            asset: 'doge.png'
         }));
 
         box.insert(new Q.UI.Text({
@@ -25,7 +25,7 @@ window.addEventListener("load", function (e) {
         box.fit(20);
     });
 
-    Q.load("enemy.png", function () {
+    Q.load("doge.png", function () {
         Q.stageScene("helloWorld");
     });
 
