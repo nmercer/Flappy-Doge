@@ -1,3 +1,4 @@
+
 window.addEventListener("load", function (e) {
 
     var Q = window.Q = Quintus()
@@ -126,6 +127,7 @@ window.addEventListener("load", function (e) {
                 speed: 300,
                 x: Q.width / 2, 
                 y: 300,
+                scale: 0.5
             });
             this.add('2d');
         },
@@ -149,6 +151,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
+                scale: .5
             });
 
             this.on("hit.sprite", function(collision) {
@@ -177,6 +180,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
+                scale: 2
             });
 
             this.on("hit.sprite", function(collision) {
@@ -204,36 +208,38 @@ window.addEventListener("load", function (e) {
 
     // STARS (refactor this bullshit)
     // ===============================================
-    var c=document.getElementById("star_field");
+    var c = document.getElementById("star_field");
     var ctx=c.getContext("2d");
     var sx = new Array(100);
     var sy = new Array(100);
     var ss = new Array(100);
     
-    for(i=0;i<sx.length;i++){
-        sx[i]=Math.round(Math.random()*c.width);
-        sy[i]=Math.round(Math.random()*c.height);
-        ss[i]=Math.round(Math.random()* 1 + 1 );
+    for(i=0; i < sx.length; i++ ){
+        sx[i]=Math.round(Math.random() * c.width);
+        sy[i]=Math.round(Math.random() * c.height);
+        ss[i]=Math.round(Math.random() * 1 + 1 );
     }
     
-    gameloop=setInterval(doGameLoop,16);
-    function doGameLoop(){
+    function doGameLoop() {
         ctx.fillStyle="black";
-        ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillRect(0, 0, c.width, c.height);
+        
         // Draw the stars.
-        ctx.fillStyle="white";
-        for(i=0;i<sx.length;i++){
-            ctx.fillRect(sx[i],sy[i],2,2);
+        ctx.fillStyle = "white";
+        for( i=0; i< sx.length; i++) {
+            ctx.fillRect(sx[i], sy[i], .5, .5);
         }
+        
         // Update the stars position.
-        for(i=0;i<sx.length;i++){
-            sx[i]-=ss[i];
-            if(sx[i]<0) sx[i]=c.width;
+        for(i = 0; i < sx.length; i++) {
+            sx[i] -= ss[i];
+            if( sx[i] < 0 ) sx[i] = c.width;
         }
     }
 
-
-
-
+    (function animloop(){
+        requestAnimFrame(animloop);
+        doGameLoop();
+    })();
 
 });
