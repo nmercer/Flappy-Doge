@@ -1,47 +1,58 @@
 window.addEventListener("load", function (e) {
 
-    // var Q = window.Q = Quintus()
-    //     .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX")
-    //     .setup({
-    //         maximize: true
-    //     });
+    var Q = window.Q = Quintus()
+        .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX")
+        .setup({
+            maximize: true
+        })
+        .controls()
 
-    // Q.scene("helloWorld", function (stage) {
-    //     var box = stage.insert(new Q.UI.Container({
-    //         x: Q.width / 2,
-    //         y: Q.height / 2,
-    //         fill: "rgba(0,0,0,0.5)",
+    Q.scene("Level1", function (stage) {
+        var player = stage.insert(new Q.Doge());
+        var container = stage.insert(new Q.UI.Container({
+          fill: "gray",
+          border: 5,
+          shadow: 10,
+          shadowColor: "rgba(0,0,0,0.5)",
+          y: 50,
+          x: Q.width/2 
+        }));
 
-    //     }));
+        stage.insert(new Q.UI.Text({ 
+      label: "Here's a label\nin a container",
+      color: "white",
+      x: 0,
+      y: 0
+    }),container);
+        container.fit(120,120);
+    });
 
-    var Q = Quintus().include("Sprites").setup();
-
-    Q.Sprite.extend("Doge",{
+    Q.Sprite.extend("Doge", {
       init:function(p) {
-        this._super(p,{
+        this._super(p, {
           asset: "doge.png",
+          jumpSpeed: -400,
+          speed: 300,
           x: 0, 
           y: 300,
-          vx: 50,
-          vy: -400
-        }); 
-      },
+        });
+        this.add('2d');
+    },
+      
+      step: function(p) {
+        
+        console.log(Q.inputs)
 
-      step: function(dt) {
-        this.p.vy += dt * 9.8;
-
-        this.p.x += this.p.vx * dt;
-        this.p.y += this.p.vy * dt;
+        if(Q.inputs['fire']) { 
+          this.p.vy = -500;
+        }
       }
+
     });
 
     Q.load("doge.png",function() {
-        var doge = new Q.Doge();
-        Q.gameLoop(function(dt) {
-            doge.update(dt);
-            Q.clear();
-            doge.render(Q.ctx);
-        });
+        Q.stageScene("Level1");
+        // run the game
     });
 
 });
