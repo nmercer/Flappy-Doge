@@ -10,22 +10,27 @@ window.addEventListener("load", function (e) {
     // MAIN GAME
     // ===============================================
     Q.scene("Level1", function (stage) {
+        // Background
+        stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 0.5, speedY: 0.5, type: 0 }));
+
         var player = stage.insert(new Q.Doge());
         var container = stage.insert(new Q.UI.Container({
-          fill: "gray",
-          border: 5,
-          shadow: 10,
-          shadowColor: "rgba(0,0,0,0.5)",
-          y: 50,
-          x: Q.width/2 
+            fill: "gray",
+            border: 5,
+            shadow: 10,
+            shadowColor: "rgba(0,0,0,0.5)",
+            y: 50,
+            x: Q.width/2 
         }));
 
+        
+
         stage.insert(new Q.UI.Text({ 
-      label: "Here's a label\nin a container",
-      color: "white",
-      x: 0,
-      y: 0
-    }),container);
+        label: "Here's a label\nin a container",
+        color: "white",
+        x: 0,
+        y: 0
+    }), container );
         container.fit(120,120);
     });
 
@@ -55,21 +60,21 @@ window.addEventListener("load", function (e) {
     // PLAYER
     // ===============================================
     Q.Sprite.extend("Doge", {
-      init:function(p) {
-        this._super(p, {
-          asset: "doge.png",
-          jumpSpeed: -400,
-          speed: 300,
-          x: Q.width / 2, 
-          y: 300,
-        });
-        this.add('2d');
-    },
-      step: function(p) {
-        if(Q.inputs['fire']) { 
-          this.p.vy = -500;
+        init:function(p) {
+            this._super(p, {
+                asset: "doge.png",
+                jumpSpeed: -400,
+                speed: 300,
+                x: Q.width / 2, 
+                y: 300,
+            });
+            this.add('2d');
+        },
+        step: function(p) {
+            if(Q.inputs['fire']) { 
+                this.p.vy = -500;
+            }
         }
-      }
     });
 
     // ENEMY
@@ -89,9 +94,8 @@ window.addEventListener("load", function (e) {
         }
     })
 
-    Q.load("doge.png",function() {
+    Q.load("doge.png, asteroid.png, space-bkg.jpg", function() {
         Q.stageScene("Level1");
-        // run the game
     });
 
 });
