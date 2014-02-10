@@ -3,12 +3,12 @@ window.addEventListener("load", function (e) {
 
     var $score = document.getElementById("score");
 
-    var Q = window.Q = Quintus()
-        .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX")
+    var Q = window.Q = Quintus({ audioSupported: ['wav']})
+        .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
         .setup({
             maximize: true
         })
-        .controls()
+        .controls().enableSound();
 
     // MAIN GAME
     // ===============================================
@@ -113,13 +113,14 @@ window.addEventListener("load", function (e) {
                 speed: 300,
                 x: Q.width / 2, 
                 y: 300,
-                scale: 0.5
+                scale: 0.5,
+                gravity: 3,
             });
             this.add('2d');
         },
         step: function(p) {
             if(Q.inputs['fire']) { 
-                this.p.vy = -500;
+                this.p.vy = -1000;
             }
             if(this.p.y - 100 > Q.height) {
                 Q.stageScene("endGame", 1, { label: "You Fell!" });
@@ -191,8 +192,9 @@ window.addEventListener("load", function (e) {
 
     Q.state.reset({ score: 0, game_over: false});
 
-    Q.load("doge.png, asteroid.png, space-bkg.jpg, coin.png", function() {
+    Q.load("doge.png, asteroid.png, space-bkg.jpg, coin.png, boner.wav", function() {
         Q.stageScene("Level1");
+        Q.audio.play('boner.wav',{ loop: true });
     });
 
     // STARS (refactor this bullshit)
