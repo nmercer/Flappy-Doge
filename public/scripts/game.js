@@ -59,6 +59,7 @@ window.addEventListener("load", function (e) {
         $action_window.className = "show";
         $play_again_btn.focus();
         $play_again_btn.addEventListener('click', function(event) {
+
             Q.clearStages();
             Q.stageScene('Level1');
             $action_window.className = "";
