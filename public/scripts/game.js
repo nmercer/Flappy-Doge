@@ -4,6 +4,7 @@ window.addEventListener("load", function (e) {
     var $score = document.getElementById("score")
     ,   $action_window = document.getElementById("action_window")
     ,   $play_again_btn = document.getElementById("play_again")
+    ,   $action_text = document.getElementById("action_text")
     ,   $game_canvas   
 
     var Q = window.Q = Quintus()
@@ -13,6 +14,24 @@ window.addEventListener("load", function (e) {
         })
         .controls()
 
+
+    // press p to pause
+    document.onkeydown = function(e) {
+        var e = e || window.event;
+        switch(e.which || e.keyCode) {
+            case 80:
+                if (Q.state.get('is_paused')) {
+                    Q.unpauseGame();
+                    Q.state.set('is_paused', false)    
+                } else {
+                    Q.pauseGame();
+                    Q.state.set('is_paused', true) 
+                }
+                
+        }
+    }
+
+    
     // MAIN GAME
     // ===============================================
     Q.scene("Level1", function (stage) {
@@ -23,6 +42,10 @@ window.addEventListener("load", function (e) {
 
         var counter = 1;
         var coin_counter = 1;
+
+        Q.state.set('game_over', false);
+
+        $score.innerHTML = "0";
 
         stage.on("step",function() {
             counter += 1;
@@ -55,45 +78,16 @@ window.addEventListener("load", function (e) {
     // GAME OVER SCREEN
     // ===============================================
     Q.scene('endGame',function(stage) {
-        
+        $action_text.innerHTML = stage.options.label;
         $action_window.className = "show";
         $play_again_btn.focus();
         $play_again_btn.addEventListener('click', function(event) {
-
             Q.clearStages();
             Q.stageScene('Level1');
-            $action_window.className = "";
-            
-            console.log($game_canvas)
-
+            Q.state.set('score', 0);
+            $action_window.className = stage.options.label;
             $game_canvas.focus()
         });
-
-
-
-        // var container = stage.insert(new Q.UI.Container({
-        //     x: Q.width/2, y: Q.height/2, fill: "rgba(255,255,255,0.8)"
-        // }));
-      
-        // var button = container.insert(new Q.UI.Button({ 
-        //     x: 0, 
-        //     y: 0, 
-        //     fill: "#F00",
-        //     label: "Play Again" 
-        // }))         
-        
-        // var label = container.insert(new Q.UI.Text({x:10, z: 1000, y: -10 - button.p.h, 
-        //                                                label: stage.options.label }));
-        // // When the button is clicked, clear all the stages
-        // // and restart the game.
-        // button.on("click", function() {
-        //     console.log('clicked')
-        //     Q.clearStages();
-        //     Q.stageScene('Level1');
-        // });
-      
-        // // Expand the container to visibily fit it's contents
-        // container.fit(20);
     });
 
     // WOW
@@ -120,6 +114,8 @@ window.addEventListener("load", function (e) {
             }
         }
     });
+
+    
 
     // PLAYER
     // ===============================================
@@ -207,9 +203,9 @@ window.addEventListener("load", function (e) {
         }
     })
 
-    Q.state.reset({ score: 0, game_over: false});
+    Q.state.reset({ score: 0, game_over: false, is_paused: false});
 
-    Q.load("doge.png, asteroid.png, space-bkg.jpg, coin.png", function() {
+    Q.load("doge.png, asteroid.png, coin.png", function() {
         Q.stageScene("Level1");
         $game_canvas = document.getElementById("quintus");
     });
