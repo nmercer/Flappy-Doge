@@ -59,7 +59,7 @@ window.addEventListener("load", function (e) {
         var level_counter = 80;         // Starting level
         var LEVEL_RESET = 10;            // Static level reset
         var level_reset = LEVEL_RESET;   // How many astroids till we make it faster
-        var lowest_level = 20;           // Fastest speed you can make it, smaller faster.
+        var lowest_level = 30;           // Fastest speed you can make it, smaller faster.
         var level_drop = 10;             // How much faster to make it every time
 
         Q.state.set('game_over', false);
@@ -254,6 +254,7 @@ window.addEventListener("load", function (e) {
                 vx: -400,
                 scale: Math.round(Math.random() * (3 - 2 ) + 2),
                 speed: parseFloat((Math.random() * (0.09 - 0.01) + 0.01).toFixed(4)),
+                angle: 0,
             });
 
             this.on("hit.sprite", function(collision) {
@@ -268,6 +269,8 @@ window.addEventListener("load", function (e) {
         step: function(dt) {
             this.p.x += this.p.vx * this.p.speed;
             this.p.y += this.p.vy * this.p.speed;
+
+            this.p.angle += Math.round(Math.random() * 5);
 
             if (this.p.x < 10) {
                 this.destroy();
