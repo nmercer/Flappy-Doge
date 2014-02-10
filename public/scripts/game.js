@@ -160,14 +160,26 @@ window.addEventListener("load", function (e) {
         },
         step: function(p) {
             this.stage.insert(new Q.Smoke({
-                    vx: -500,
-                    scale: 1.5,
+                    vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
+                    vy: Math.round(Math.random() * (300 - -100 ) + -100),
+                    scale: 1,
                     y: this.p.y,
                     x: this.p.x - 100,
+                    gravity: 0,
+                    opacity: .5
                 }))
 
             if(Q.inputs['fire']) { 
                 this.p.vy = -1000;
+                this.stage.insert(new Q.Smoke({
+                    vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
+                    vy: Math.round(Math.random() * (300 - -100 ) + -100),
+                    scale: 3,
+                    y: this.p.y,
+                    x: this.p.x - 100,
+                    gravity: 0,
+                    opacity: .5
+                }))
             }
             if(this.p.y - 100 > Q.height) {
                 Q.stageScene("endGame", 1, { label: "You Fell!" });
@@ -251,7 +263,12 @@ window.addEventListener("load", function (e) {
             this._super(p, {
                 asset: "smoke.png",
             });
-        }
+        },
+        // step: function(p) {
+        //     if (this.p.x < 10) {
+        //         this.destroy();
+        //     }
+        // }
     });
 
     // STARS (refactor this bullshit)
