@@ -232,7 +232,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: 2.3,
+                scale: Math.round(Math.random() * (3 - 2 ) + 2),
                 speed: parseFloat((Math.random() * (0.09 - 0.01) + 0.01).toFixed(4)),
             });
 
