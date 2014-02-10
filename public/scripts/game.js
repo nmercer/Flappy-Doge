@@ -52,7 +52,7 @@ window.addEventListener("load", function (e) {
         var level_counter = 80;         // Starting level
         var LEVEL_RESET = 10;            // Static level reset
         var level_reset = LEVEL_RESET;   // How many astroids till we make it faster
-        var lowest_level = 20;           // Fastest speed you can make it, smaller faster.
+        var lowest_level = 30;           // Fastest speed you can make it, smaller faster.
         var level_drop = 10;             // How much faster to make it every time
 
         Q.state.set('game_over', false);
