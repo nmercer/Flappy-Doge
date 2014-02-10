@@ -1,17 +1,26 @@
 
 window.addEventListener("load", function (e) {
 
+
+    // Elements
     var $score = $("#score")
     ,   $action_window = $("#action_window")
     ,   $play_again_btn = $("#play_again")
     ,   $player_name = $('#player_name')
     ,   $action_text = $("#action_text")
     ,   $mute_music = $('#mute_music')
-    ,   $game_canvas   
+    ,   $progress_bar = $('#progress_bar')
+    ,   $game_canvas
 
+
+    // Game states
     var try_count = 0
     ,   launch_asteroids = true
     ,   music_playing = localStorage.getItem('mute_music') || true;
+
+
+    // Constants
+    var MOON = 10000000;
 
     console.log(music_playing)
 
@@ -59,15 +68,13 @@ window.addEventListener("load", function (e) {
     // MAIN GAME
     // ===============================================
     Q.scene("Level1", function (stage) {
-        // Background
-        //stage.insert(new Q.Repeater({ asset: "space-bkg.jpg", speedX: 1, speedY: 1, type: 0 }));
         var player = stage.insert(new Q.Doge());
         var asteroid = stage.insert(new Q.Asteroid());
 
         var counter = 1;
         var coin_counter = 1;
 
-        var level_counter = 80;         // Starting level
+        var level_counter = 80;          // Starting level
         var LEVEL_RESET = 10;            // Static level reset
         var level_reset = LEVEL_RESET;   // How many astroids till we make it faster
         var lowest_level = 30;           // Fastest speed you can make it, smaller faster.
@@ -111,6 +118,7 @@ window.addEventListener("load", function (e) {
                         stage.insert(new Q.Coin({y: Math.floor(Math.random() * Q.height) + 1}));
                     }
                 }
+                updateProgress(Q.state.get('score'));
             }
 
             if(!Q.state.get('game_over')) {
@@ -132,7 +140,7 @@ window.addEventListener("load", function (e) {
         
         if (player.name && try_count < 2) {
             
-            $action_text.html("Hello, " + player.name);
+            $action_text.html("Hello " + player.name + '!');
             $player_name.hide();
             $player_name.find('input').val(player.name)
 
@@ -147,7 +155,7 @@ window.addEventListener("load", function (e) {
             localStorage.setItem('flappy_doge_highscore', current_score)
         }
         
-        $('#highscore').text(player.highscore)
+        $('#highscore span').text(player.highscore)
          
         $action_window.fadeIn();
         $play_again_btn.focus();
@@ -394,6 +402,10 @@ window.addEventListener("load", function (e) {
         if(music_playing === 'true') {
             Q.audio.play('boner.wav', {loop: true});
         }
+    }
+
+    function updateProgress(score) {
+        $progress_bar.css('width', score / MOON * 100 + '%' ); 
     }
 
 

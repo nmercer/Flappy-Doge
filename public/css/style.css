@@ -34,12 +34,36 @@ canvas {
 	z-index: 10;
 }
 
+#progress_wrapper {
+	display: inline-block;
+	background-color: #210325;
+	width: 60%;
+	margin: 0 50px;
+	border-radius: 5px;
+	padding: 3px;
+	background-image: url('/images/small_moon.png');
+	background-repeat: no-repeat;
+	background-position: right;
+	background-size: 20px;
+}
+
+#progress_bar {
+	background-color: #4C3566;
+	height: 20px;
+	width:0px;
+}
+
+#options {
+	display: inline-block;
+}
+
 #mute_music {
 	float: right;
 	padding-right: 20px
 }
 
 #highscore {
+	display: inline-block;
 }
 
 #action_window {
@@ -52,7 +76,7 @@ canvas {
 
 #action_window button {
 	color: #B614DF;
-	border: 2px solid;
+	border: 3px solid;
 	border-radius: 3px;
 	padding: 20px 70px;
 	font-size: 16px;
@@ -60,6 +84,7 @@ canvas {
 	background: rgba(0, 0, 0, 0);
 	cursor: pointer;
 	font-family: Comic Sans MS;
+	outline: none;
 }
 
 #action_window .container {
