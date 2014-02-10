@@ -33,6 +33,10 @@ window.addEventListener("load", function (e) {
         }
     }
 
+    // PLAYER
+    // ===============================================
+
+
     
     // MAIN GAME
     // ===============================================
@@ -98,7 +102,7 @@ window.addEventListener("load", function (e) {
 
     // GAME OVER SCREEN
     // ===============================================
-    Q.scene('endGame',function(stage) {
+    Q.scene('startGame',function(stage) {
         $action_text.innerHTML = stage.options.label;
         $action_window.className = "show";
         $play_again_btn.focus();
@@ -182,7 +186,7 @@ window.addEventListener("load", function (e) {
                 }))
             }
             if(this.p.y - 100 > Q.height) {
-                Q.stageScene("endGame", 1, { label: "You Fell!" });
+                Q.stageScene("startGame", 1, { label: "You Fell!" });
             }
             if(this.p.y < 0) {
                 this.p.y = 0;
@@ -239,7 +243,7 @@ window.addEventListener("load", function (e) {
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) { 
                     Q.state.set("game_over", true);
-                    Q.stageScene("endGame",1, { label: "You Died" }); 
+                    Q.stageScene("startGame",1, { label: "You Died" }); 
                     collision.obj.destroy();
                 }
             });
@@ -311,11 +315,9 @@ window.addEventListener("load", function (e) {
     Q.state.reset({ score: 0, game_over: false, is_paused: false});
 
     Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png", function() {
-        Q.stageScene("Level1");
+        Q.stageScene("startGame",1, { label: "Start Game" });
         Q.audio.play('boner.wav',{ loop: true });
         $game_canvas = document.getElementById("quintus");
     });
-
-    
 
 });
