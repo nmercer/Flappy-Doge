@@ -45,29 +45,48 @@ window.addEventListener("load", function (e) {
         var counter = 1;
         var coin_counter = 1;
 
-        Q.state.set('game_over', false);
 
+        var level_counter = 100;// Starting level
+        var LEVEL_RESET = 20;
+        var level_reset = LEVEL_RESET;   // How many astroids till we make it faster
+        var lowest_level = 20;  // Fastest speed you can make it, smaller faster.
+        var level_drop = 10;    // How much faster to make it 
+
+        Q.state.set('game_over', false);
         $score.innerHTML = "0";
 
         stage.on("step",function() {
             counter += 1;
 
-            if ((counter % 50) === 0) {
+            if ((counter % level_counter) === 0) {
                 counter = 1;
-                stage.insert(new Q.Asteroid({ 
+                stage.insert(new Q.Asteroid({
                     y: Math.floor(Math.random() * Q.height) + 1,
                 }));
 
                 coin_counter += 1;
+
+                level_reset -= 1;
+                if(level_reset <= 0) {
+                    level_reset = LEVEL_RESET;
+                    if (level_counter > lowest_level) {
+                        level_counter -= level_drop;
+                    }
+                }
             }
 
             // Todo - Make this more random
             if ((coin_counter % 5) === 0) {
                 coin_counter = 1;
 
-                stage.insert(new Q.Coin({ 
-                    y: Math.floor(Math.random() * Q.height) + 1,
-                }));
+                if ((Math.floor(Math.random() * 1000) + 1) === 888) {
+                    for(var i = 0; i < Q.height; i=i+20) {
+                        stage.insert(new Q.Coin({y: i}));
+                    }
+                }
+                else {
+                    stage.insert(new Q.Coin({y: Math.floor(Math.random() * Q.height) + 1}));
+                }
             }
 
             if(!Q.state.get('game_over')) {
@@ -96,7 +115,12 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.UI.Text.extend("Wow", {
         init:function(p) {
-            var wow_choices = ["wow", "To The Moon!", "Much Coin", "Very Win"]; // Todo - Add way more
+            var wow_choices = ["wow",
+                               "To The Moon!",
+                               "Much Coin", 
+                               "Very Win", 
+                               "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
+                               "such truasre"]; // Todo - Add way more
 
             // Todo - Spawn these in random places, effects?
             this._super(p, {
@@ -196,7 +220,8 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: 2.3
+                scale: 2.3,
+                speed: parseFloat((Math.random() * (0.09 - 0.01) + 0.01).toFixed(4)),
             });
 
             this.on("hit.sprite", function(collision) {
@@ -209,8 +234,8 @@ window.addEventListener("load", function (e) {
         },
 
         step: function(dt) {
-            this.p.x += this.p.vx * dt;
-            this.p.y += this.p.vy * dt;
+            this.p.x += this.p.vx * this.p.speed;
+            this.p.y += this.p.vy * this.p.speed;
 
             if (this.p.x < 10) {
                 this.destroy();
