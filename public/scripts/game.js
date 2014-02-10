@@ -234,6 +234,7 @@ window.addEventListener("load", function (e) {
                 vx: -400,
                 scale: Math.round(Math.random() * (3 - 2 ) + 2),
                 speed: parseFloat((Math.random() * (0.09 - 0.01) + 0.01).toFixed(4)),
+                angle: 0,
             });
 
             this.on("hit.sprite", function(collision) {
@@ -248,6 +249,8 @@ window.addEventListener("load", function (e) {
         step: function(dt) {
             this.p.x += this.p.vx * this.p.speed;
             this.p.y += this.p.vy * this.p.speed;
+
+            this.p.angle += Math.round(Math.random() * 5);
 
             if (this.p.x < 10) {
                 this.destroy();
