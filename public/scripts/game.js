@@ -36,6 +36,13 @@ window.addEventListener("load", function (e) {
     // PLAYER
     // ===============================================
 
+    var player = {
+        highscore: 0,
+        name: ""
+    }
+
+
+
 
     
     // MAIN GAME
@@ -102,6 +109,15 @@ window.addEventListener("load", function (e) {
     // GAME OVER SCREEN
     // ===============================================
     Q.scene('startGame',function(stage) {
+        
+        var current_score = Q.state.get('score')
+        var high_score = localStorage.getItem('flappy_doge_highscore') || 0
+
+        if (current_score > high_score) {
+            localStorage.setItem('flappy_doge_highscore', current_score)
+        }
+
+
         $action_text.innerHTML = stage.options.label;
         $action_window.className = "show";
         $play_again_btn.focus();
@@ -147,7 +163,7 @@ window.addEventListener("load", function (e) {
 
     
 
-    // PLAYER
+    // DOGE!
     // ===============================================
     Q.Sprite.extend("Doge", {
         init:function(p) {

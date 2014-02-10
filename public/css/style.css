@@ -5,6 +5,8 @@ canvas {
 	background-color: transparent;
 }
 
+.hidden {display: none;}
+
 #star_field {
 	width: 100%!important;
 	height: 100%!important;
