@@ -156,7 +156,10 @@ window.addEventListener("load", function (e) {
         step: function(dt) {
             this.p.x += this.p.vx * dt;
             this.p.y += this.p.vy * dt;
-            // Todo - Destroy these when they are past a certain part of the screen
+
+            if (this.p.x < 10) {
+                this.destroy();
+            }
         }
     })
 
@@ -186,11 +189,13 @@ window.addEventListener("load", function (e) {
             this.p.x += this.p.vx * dt;
             this.p.y += this.p.vy * dt;
 
-            // Todo - Destroy these when they are past a certain part of the screen
+            if (this.p.x < 10) {
+                this.destroy();
+            }
         }
     })
 
-    Q.state.reset({ score: 0, game_over: false});
+    Q.state.reset({score: 0, game_over: false});
 
     Q.load("doge.png, asteroid.png, space-bkg.jpg, coin.png, boner.wav", function() {
         Q.stageScene("Level1");
