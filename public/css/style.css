@@ -18,3 +18,24 @@ canvas {
 	left: 26%;
 	font-size: 144px;
 }
+
+#action_window {
+	position: absolute;
+	width:100%;
+	height:100%;
+	display: none;
+	z-index: 10;
+}
+
+#action_window.show {
+	display: block;
+}
+
+#action_window div {
+	margin: 15% auto;
+	width: 400px;
+	background: #FFF;
+	border-radius: 3px;
+	padding: 15px;
+	text-align: center;
+}
