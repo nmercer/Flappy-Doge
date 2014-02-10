@@ -5,6 +5,8 @@ canvas {
 	background-color: transparent;
 }
 
+
+
 .hidden {display: none;}
 
 #star_field {
@@ -22,6 +24,19 @@ canvas {
 	text-align: center;
 }
 
+#bottom-bar {
+	position: absolute;
+	bottom: 0px;
+	color: #B5A8DD;
+	background-color: #322242;
+	width: 100%;
+	padding: 5px;
+	z-index: 10;
+}
+
+#highscore {
+}
+
 #action_window {
 	position: absolute;
 	width:100%;
@@ -30,11 +45,23 @@ canvas {
 	z-index: 10;
 }
 
+#action_window button {
+	color: #B614DF;
+	border: 2px solid;
+	border-radius: 3px;
+	padding: 20px 70px;
+	font-size: 16px;
+	font-weight: bold;
+	background: rgba(0, 0, 0, 0);
+	cursor: pointer;
+	font-family: Comic Sans MS;
+}
+
 #action_window.show {
 	display: block;
 }
 
-#action_window div {
+#action_window .container {
 	margin: 15% auto;
 	width: 400px;
 	background: #FFF;
@@ -42,3 +69,12 @@ canvas {
 	padding: 15px;
 	text-align: center;
 }
+
+#flash_screen {
+	position: absolute;
+	top:0;bottom: 0;left:0;right:0;
+	background-color: white;
+	z-index: 15;
+	display: none;
+}
+

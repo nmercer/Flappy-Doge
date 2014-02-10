@@ -11,19 +11,28 @@
 </head>
 
 <body>
+    <div id="flash_screen"></div>
     <canvas id="star_field"></canvas>
     <div id="stats">
         <div id="score"></div>
     </div>
 
     <div id="action_window">
-        <div>
+        <div class="container">
             <p id="action_text"></p>
-            <input id="player_name" class="hidden"/>
+            <div id="player_name">
+                <label>Your Name:</label>
+                <input />
+            </div>
             <button id="play_again">Go!</button>
         </div>
     </div>
 
+    <div id="bottom-bar">
+        Highscore: <span id="highscore"></span>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script type="text/javascript" src="/public/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="scripts/lib/hidpi-canvas.js"></script>
     <script type="text/javascript" src="scripts/lib/quintus.js"></script>

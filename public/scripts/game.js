@@ -1,11 +1,14 @@
 
 window.addEventListener("load", function (e) {
 
-    var $score = document.getElementById("score")
-    ,   $action_window = document.getElementById("action_window")
-    ,   $play_again_btn = document.getElementById("play_again")
-    ,   $action_text = document.getElementById("action_text")
+    var $score = $("#score")
+    ,   $action_window = $("#action_window")
+    ,   $play_again_btn = $("#play_again")
+    ,   $player_name = $('#player_name')
+    ,   $action_text = $("#action_text")
     ,   $game_canvas   
+
+    var try_count = 0;
 
     var Q = window.Q = Quintus({ audioSupported: ['wav']})
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
@@ -36,9 +39,9 @@ window.addEventListener("load", function (e) {
     // PLAYER
     // ===============================================
 
-    var player = {
-        highscore: 0,
-        name: ""
+    var player = window.player = {
+        highscore: localStorage.getItem('flappy_doge_highscore') || 0,
+        name: localStorage.getItem('flappy_doge_name') || false
     }
 
 
@@ -63,7 +66,7 @@ window.addEventListener("load", function (e) {
         var level_drop = 10;             // How much faster to make it every time
 
         Q.state.set('game_over', false);
-        $score.innerHTML = "0";
+        $score.text("0");
 
         stage.on("step",function() {
             counter += 1;
@@ -101,32 +104,48 @@ window.addEventListener("load", function (e) {
 
             if(!Q.state.get('game_over')) {
                 Q.state.inc("score", 100);
-                $score.innerHTML = Q.state.get("score");
+                $score.text(Q.state.get("score"));
             }
         });
     });
 
-    // GAME OVER SCREEN
+    // START SCREEN
     // ===============================================
     Q.scene('startGame',function(stage) {
         
-        var current_score = Q.state.get('score')
-        var high_score = localStorage.getItem('flappy_doge_highscore') || 0
+        try_count += 1
 
-        if (current_score > high_score) {
-            localStorage.setItem('flappy_doge_highscore', current_score)
+        var current_score = Q.state.get('score')
+
+        $action_text.text(stage.options.label)
+        
+        if (player.name && try_count < 2) {
+            
+            $action_text.html("Hello, " + player.name);
+            $player_name.hide();
+            $player_name.find('input').val(player.name)
+
+        } else {
+            $play_again_btn.on('click', function(event) {
+                localStorage.setItem('flappy_doge_name', $player_name.find('input').val());
+            });
         }
 
-
-        $action_text.innerHTML = stage.options.label;
-        $action_window.className = "show";
+        if (current_score > player.highscore) {
+            player.highscore = current_score
+            localStorage.setItem('flappy_doge_highscore', current_score)
+        }
+        
+        $('#highscore').text(player.highscore)
+         
+        $action_window.show();
         $play_again_btn.focus();
-        $play_again_btn.addEventListener('click', function(event) {
+        $play_again_btn.on('click', function(event) {
             Q.clearStages();
             Q.stageScene('Level1');
             Q.state.set('score', 0);
-            $action_window.className = stage.options.label;
-            $game_canvas.focus()
+            $action_window.hide();
+            setTimeout(function(){$game_canvas.focus()}, 10)
         });
     });
 
@@ -183,7 +202,7 @@ window.addEventListener("load", function (e) {
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 1,
-                    y: this.p.y,
+                    y: this.p.y + 50,
                     x: this.p.x - 100,
                     gravity: 0,
                     opacity: .5
@@ -195,13 +214,14 @@ window.addEventListener("load", function (e) {
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 3,
-                    y: this.p.y,
+                    y: this.p.y + 50,
                     x: this.p.x - 100,
                     gravity: 0,
                     opacity: .5
                 }))
             }
             if(this.p.y - 100 > Q.height) {
+                this.destroy();
                 Q.stageScene("startGame", 1, { label: "You Fell!" });
             }
             if(this.p.y < 0) {
@@ -228,6 +248,7 @@ window.addEventListener("load", function (e) {
                     Q.state.inc("score", 1000000);
                     this.stage.insert(new Q.Wow());
                     this.destroy();
+                    flashScreen();
                 }
             });
         },
@@ -330,12 +351,24 @@ window.addEventListener("load", function (e) {
         doGameLoop();
     })();
 
+
+
+    function flashScreen() {
+        $('#flash_screen').show()
+        setTimeout(function(){ $('#flash_screen').hide() }, 5)
+    }
+
+
+
+    // INIT GAME
+    // ==============================================
+
     Q.state.reset({ score: 0, game_over: false, is_paused: false});
 
     Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         Q.audio.play('boner.wav',{ loop: true });
-        $game_canvas = document.getElementById("quintus");
+        $game_canvas = $("#quintus");
     });
 
 });
