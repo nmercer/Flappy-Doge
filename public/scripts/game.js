@@ -49,12 +49,11 @@ window.addEventListener("load", function (e) {
         var counter = 1;
         var coin_counter = 1;
 
-
-        var level_counter = 100;// Starting level
-        var LEVEL_RESET = 20;
+        var level_counter = 80;         // Starting level
+        var LEVEL_RESET = 10;            // Static level reset
         var level_reset = LEVEL_RESET;   // How many astroids till we make it faster
-        var lowest_level = 20;  // Fastest speed you can make it, smaller faster.
-        var level_drop = 10;    // How much faster to make it 
+        var lowest_level = 20;           // Fastest speed you can make it, smaller faster.
+        var level_drop = 10;             // How much faster to make it every time
 
         Q.state.set('game_over', false);
         $score.innerHTML = "0";
@@ -124,7 +123,8 @@ window.addEventListener("load", function (e) {
                                "Much Coin", 
                                "Very Win", 
                                "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
-                               "such truasre"]; // Todo - Add way more
+                               "such truasre",
+                               "every doge has its day"]; // Todo - Add way more
 
             // Todo - Spawn these in random places, effects?
             this._super(p, {
@@ -310,7 +310,6 @@ window.addEventListener("load", function (e) {
         requestAnimFrame(animloop);
         doGameLoop();
     })();
-
 
     Q.state.reset({ score: 0, game_over: false, is_paused: false});
 
