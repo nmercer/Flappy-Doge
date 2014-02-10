@@ -10,11 +10,13 @@ window.addEventListener("load", function (e) {
     ,   $action_text = $("#action_text")
     ,   $mute_music = $('#mute_music')
     ,   $progress_bar = $('#progress_bar')
+    ,   $coin_count = $('#coin_count')
+    ,   $title = $('#title')
     ,   $game_canvas
 
 
     // Game states
-    var try_count = 0
+    var games_played = 0
     ,   launch_asteroids = true
     ,   music_playing = localStorage.getItem('mute_music') || true;
 
@@ -22,36 +24,14 @@ window.addEventListener("load", function (e) {
     // Constants
     var MOON = 10000000;
 
-    console.log(music_playing)
-
+    // Initialize Quintus
     var Q = window.Q = Quintus({ audioSupported: ['wav']})
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
         .setup({
             maximize: true
         })
-        .controls().enableSound();
-
-
-    // press p to pause
-    document.onkeydown = function(e) {
-        var e = e || window.event;
-        switch(e.which || e.keyCode) {
-            case 80:
-                if (Q.state.get('is_paused')) {
-                    Q.unpauseGame();
-                    Q.state.set('is_paused', false)
-                } else {
-                    Q.pauseGame();
-                    Q.state.set('is_paused', true)
-                }
-            case 77:
-                muteMusic();
-        }
-    }
-
-    $mute_music.on('click', function() {
-        muteMusic();
-    });
+        .controls()
+        .enableSound();
 
     // PLAYER
     // ===============================================
@@ -62,9 +42,6 @@ window.addEventListener("load", function (e) {
     }
 
 
-
-
-    
     // MAIN GAME
     // ===============================================
     Q.scene("Level1", function (stage) {
@@ -75,12 +52,15 @@ window.addEventListener("load", function (e) {
         var coin_counter = 1;
 
         var level_counter = 80;          // Starting level
-        var LEVEL_RESET = 10;            // Static level reset
+        var LEVEL_RESET = 5;            // Static level reset
         var level_reset = LEVEL_RESET;   // How many astroids till we make it faster
         var lowest_level = 30;           // Fastest speed you can make it, smaller faster.
         var level_drop = 10;             // How much faster to make it every time
 
         Q.state.set('game_over', false);
+        Q.state.set('coins', 0);
+        $coin_count.find('span').text(Q.state.get("coins"))
+
         $score.text("0");
 
         stage.on("step",function() {
@@ -117,6 +97,8 @@ window.addEventListener("load", function (e) {
                     else {
                         stage.insert(new Q.Coin({y: Math.floor(Math.random() * Q.height) + 1}));
                     }
+
+                    clearSmoke(); // doesnt have to be here, but it was convenient at the time
                 }
                 updateProgress(Q.state.get('score'));
             }
@@ -125,6 +107,7 @@ window.addEventListener("load", function (e) {
                 Q.state.inc("score", 100);
                 $score.text(Q.state.get("score"));
             }
+
         });
     });
 
@@ -132,13 +115,13 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.scene('startGame',function(stage) {
         
-        try_count += 1
+        games_played += 1
 
         var current_score = Q.state.get('score')
 
         $action_text.text(stage.options.label)
         
-        if (player.name && try_count < 2) {
+        if (player.name && games_played < 2) {
             
             $action_text.html("Hello " + player.name + '!');
             $player_name.hide();
@@ -211,7 +194,7 @@ window.addEventListener("load", function (e) {
             }
             if(this.p.y - 100 > Q.height) {
                 this.destroy();
-                Q.stageScene("startGame", 1, { label: "You Fell!" });
+                Q.stageScene("startGame", 1, { label: "Whoops! Try Again!" });
                 stopAsteroids();
             }
             if(this.p.y < 0) {
@@ -236,9 +219,11 @@ window.addEventListener("load", function (e) {
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) { 
                     Q.state.inc("score", 1000000);
+                    Q.state.inc('coins', 1);
                     this.stage.insert(new Q.Wow());
                     this.destroy();
                     flashScreen();
+                    $coin_count.find('span').text(Q.state.get("coins"))
                 }
             });
         },
@@ -328,7 +313,7 @@ window.addEventListener("load", function (e) {
             this._super(p, {
                 asset: "smoke.png",
             });
-        },
+        }
     });
 
     // STARS (refactor this bullshit)
@@ -366,6 +351,16 @@ window.addEventListener("load", function (e) {
         requestAnimFrame(animloop);
         doGameLoop();
     })();
+
+    function clearSmoke() {
+        var smoke = Q('Smoke')
+
+        old_smoke = smoke.items.splice(0, 400);
+        console.log(old_smoke)
+        for (var i = 0; i < old_smoke.length; i++) {
+            old_smoke[i].destroy();
+        };
+    }
 
 
     function stopAsteroids() {
@@ -405,7 +400,10 @@ window.addEventListener("load", function (e) {
     }
 
     function updateProgress(score) {
-        $progress_bar.css('width', score / MOON * 100 + '%' ); 
+        $progress_bar.css('width', score / MOON * 100 + '%' );
+        if (score >= MOON) {
+            // MOOOOON
+        } 
     }
 
 
@@ -415,12 +413,46 @@ window.addEventListener("load", function (e) {
     // INIT GAME
     // ==============================================
 
-    Q.state.reset({ score: 0, game_over: false, is_paused: false});
+    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0 });
 
     Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();
     });
+
+
+
+    // USER INTERACTIONS
+    // ==============================================
+
+    // Key Bindings
+    document.onkeydown = function(e) {
+        var e = e || window.event;
+        switch(e.which || e.keyCode) {
+            // Pause game on 'P'
+            case 80:
+                if (Q.state.get('is_paused')) {
+                    Q.unpauseGame();
+                    Q.state.set('is_paused', false)
+                } else {
+                    Q.pauseGame();
+                    Q.state.set('is_paused', true)
+                }
+            // Pause game on 'M'    
+            case 77:
+                muteMusic();
+        }
+    }
+
+    $mute_music.on('click', function() {
+        muteMusic();
+    });
+
+
+
+
+
+
 
 });

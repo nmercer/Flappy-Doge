@@ -5,8 +5,6 @@ canvas {
 	background-color: transparent;
 }
 
-
-
 .hidden {display: none;}
 
 #star_field {
@@ -22,8 +20,18 @@ canvas {
 	width:100%;
 	font-size: 144px;
 	text-align: center;
+	font-weight: bold;
 }
 
+#coin_count {
+	font-size: 30px;
+	margin-top: -30px;
+}
+
+#title {
+	font-size: 34px;
+}
+	
 #bottom-bar {
 	position: absolute;
 	bottom: 0px;
@@ -45,12 +53,16 @@ canvas {
 	background-repeat: no-repeat;
 	background-position: right;
 	background-size: 20px;
+	overflow: auto;
 }
 
 #progress_bar {
 	background-color: #4C3566;
 	height: 20px;
 	width:0px;
+	-webkit-transition: all .2s;
+	-moz-transition: all .2s;
+	transition: all .2s;
 }
 
 #options {
@@ -89,7 +101,7 @@ canvas {
 
 #action_window .container {
 	margin: 15% auto;
-	width: 400px;
+	width: 600px;
 	background: #FFF;
 	border-radius: 3px;
 	padding: 15px;
