@@ -34,6 +34,11 @@ canvas {
 	z-index: 10;
 }
 
+#mute_music {
+	float: right;
+	padding-right: 20px
+}
+
 #highscore {
 }
 
@@ -57,10 +62,6 @@ canvas {
 	font-family: Comic Sans MS;
 }
 
-#action_window.show {
-	display: block;
-}
-
 #action_window .container {
 	margin: 15% auto;
 	width: 400px;
@@ -74,7 +75,7 @@ canvas {
 	position: absolute;
 	top:0;bottom: 0;left:0;right:0;
 	background-color: white;
-	z-index: 15;
+	z-index: 9;
 	display: none;
 }
 

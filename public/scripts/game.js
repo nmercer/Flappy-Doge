@@ -6,9 +6,14 @@ window.addEventListener("load", function (e) {
     ,   $play_again_btn = $("#play_again")
     ,   $player_name = $('#player_name')
     ,   $action_text = $("#action_text")
+    ,   $mute_music = $('#mute_music')
     ,   $game_canvas   
 
-    var try_count = 0;
+    var try_count = 0
+    ,   launch_asteroids = true
+    ,   music_playing = localStorage.getItem('mute_music') || true;
+
+    console.log(music_playing)
 
     var Q = window.Q = Quintus({ audioSupported: ['wav']})
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
@@ -26,15 +31,18 @@ window.addEventListener("load", function (e) {
                 if (Q.state.get('is_paused')) {
                     Q.unpauseGame();
                     Q.state.set('is_paused', false)
-                    Q.audio.play('boner.wav', { loop: true }); 
-   
                 } else {
                     Q.pauseGame();
                     Q.state.set('is_paused', true)
-                    Q.audio.stop();
                 }
+            case 77:
+                muteMusic();
         }
     }
+
+    $mute_music.on('click', function() {
+        muteMusic();
+    });
 
     // PLAYER
     // ===============================================
@@ -71,34 +79,37 @@ window.addEventListener("load", function (e) {
         stage.on("step",function() {
             counter += 1;
 
-            if ((counter % level_counter) === 0) {
-                counter = 1;
-                stage.insert(new Q.Asteroid({
-                    y: Math.floor(Math.random() * Q.height) + 1,
-                }));
+            if (launch_asteroids) {
 
-                coin_counter += 1;
+                if ((counter % level_counter) === 0) {
+                    counter = 1;
+                    stage.insert(new Q.Asteroid({
+                        y: Math.floor(Math.random() * Q.height) + 1,
+                    }));
 
-                level_reset -= 1;
-                if(level_reset <= 0) {
-                    level_reset = LEVEL_RESET;
-                    if (level_counter > lowest_level) {
-                        level_counter -= level_drop;
+                    coin_counter += 1;
+
+                    level_reset -= 1;
+                    if(level_reset <= 0) {
+                        level_reset = LEVEL_RESET;
+                        if (level_counter > lowest_level) {
+                            level_counter -= level_drop;
+                        }
                     }
                 }
-            }
 
-            // Todo - Make this more random
-            if ((coin_counter % 5) === 0) {
-                coin_counter = 1;
+                // Todo - Make this more random
+                if ((coin_counter % 5) === 0) {
+                    coin_counter = 1;
 
-                if ((Math.floor(Math.random() * 1000) + 1) === 888) {
-                    for(var i = 0; i < Q.height; i=i+20) {
-                        stage.insert(new Q.Coin({y: i}));
+                    if ((Math.floor(Math.random() * 1000) + 1) === 888) {
+                        for(var i = 0; i < Q.height; i=i+20) {
+                            stage.insert(new Q.Coin({y: i}));
+                        }
                     }
-                }
-                else {
-                    stage.insert(new Q.Coin({y: Math.floor(Math.random() * Q.height) + 1}));
+                    else {
+                        stage.insert(new Q.Coin({y: Math.floor(Math.random() * Q.height) + 1}));
+                    }
                 }
             }
 
@@ -138,46 +149,16 @@ window.addEventListener("load", function (e) {
         
         $('#highscore').text(player.highscore)
          
-        $action_window.show();
+        $action_window.fadeIn();
         $play_again_btn.focus();
         $play_again_btn.on('click', function(event) {
             Q.clearStages();
             Q.stageScene('Level1');
             Q.state.set('score', 0);
-            $action_window.hide();
+            $action_window.fadeOut();
             setTimeout(function(){$game_canvas.focus()}, 10)
+            launch_asteroids = true
         });
-    });
-
-    // WOW
-    // ===============================================
-    Q.UI.Text.extend("Wow", {
-        init:function(p) {
-            var wow_choices = ["wow",
-                               "To The Moon!",
-                               "Much Coin", 
-                               "Very Win", 
-                               "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
-                               "such truasre",
-                               "every doge has its day"]; // Todo - Add way more
-
-            // Todo - Spawn these in random places, effects?
-            this._super(p, {
-                label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
-                color: "white",
-                x: Q.width/2,
-                y: 100,
-                counter: 1,
-            });
-        },
-
-        step: function(p) {
-            this.p.counter += 1;
-
-            if ((this.p.counter % 50) === 0) {
-                this.destroy();
-            }
-        }
     });
 
     
@@ -223,6 +204,7 @@ window.addEventListener("load", function (e) {
             if(this.p.y - 100 > Q.height) {
                 this.destroy();
                 Q.stageScene("startGame", 1, { label: "You Fell!" });
+                stopAsteroids();
             }
             if(this.p.y < 0) {
                 this.p.y = 0;
@@ -230,7 +212,7 @@ window.addEventListener("load", function (e) {
         }
     });
 
-    // COIN
+    // DOGECOIN
     // ===============================================
     Q.Sprite.extend("Coin", {
         init: function(p) {
@@ -263,7 +245,7 @@ window.addEventListener("load", function (e) {
         }
     })
 
-    // ENEMY
+    // ASTEROID
     // ===============================================
     Q.Sprite.extend("Asteroid", {
         init: function(p) {
@@ -283,6 +265,7 @@ window.addEventListener("load", function (e) {
                     Q.state.set("game_over", true);
                     Q.stageScene("startGame",1, { label: "You Died" }); 
                     collision.obj.destroy();
+                    stopAsteroids();
                 }
             });
         },
@@ -298,7 +281,37 @@ window.addEventListener("load", function (e) {
             }
         }
     })
+    
+    // WOW
+    // ===============================================
+    Q.UI.Text.extend("Wow", {
+        init:function(p) {
+            var wow_choices = ["wow",
+                               "To The Moon!",
+                               "Much Coin", 
+                               "Very Win", 
+                               "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
+                               "such truasre",
+                               "every doge has its day"]; // Todo - Add way more
 
+            // Todo - Spawn these in random places, effects?
+            this._super(p, {
+                label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
+                color: "white",
+                x: Q.width/2,
+                y: 100,
+                counter: 1,
+            });
+        },
+
+        step: function(p) {
+            this.p.counter += 1;
+
+            if ((this.p.counter % 50) === 0) {
+                this.destroy();
+            }
+        }
+    });
 
     // MUCH SMOKE TRAILS
     // ===============================================
@@ -308,11 +321,6 @@ window.addEventListener("load", function (e) {
                 asset: "smoke.png",
             });
         },
-        // step: function(p) {
-        //     if (this.p.x < 10) {
-        //         this.destroy();
-        //     }
-        // }
     });
 
     // STARS (refactor this bullshit)
@@ -352,11 +360,43 @@ window.addEventListener("load", function (e) {
     })();
 
 
-
+    function stopAsteroids() {
+        
+        launch_asteroids = false
+        var asteroids = Q('Asteroid')
+        
+        console.log(asteroids)
+        for (var i = 0; i < asteroids.items.length; i++) {
+            asteroids.items[i].p.vx = 0;
+        };
+    }
+    
     function flashScreen() {
         $('#flash_screen').show()
         setTimeout(function(){ $('#flash_screen').hide() }, 5)
     }
+
+    function muteMusic() {
+        if (music_playing) {
+            Q.audio.stop();
+            music_playing = false;
+            $mute_music.text('unmute')
+            localStorage.setItem('mute_music', true);
+        } else {
+            Q.audio.play('boner.wav', {loop: true});
+            music_playing = true;
+            $mute_music.text('mute')
+            localStorage.setItem('mute_music', false);
+        }
+    }
+
+    function playMusic() {
+        if(music_playing === 'true') {
+            Q.audio.play('boner.wav', {loop: true});
+        }
+    }
+
+
 
 
 
@@ -367,8 +407,8 @@ window.addEventListener("load", function (e) {
 
     Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
-        Q.audio.play('boner.wav',{ loop: true });
         $game_canvas = $("#quintus");
+        playMusic();
     });
 
 });
