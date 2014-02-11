@@ -356,7 +356,6 @@ window.addEventListener("load", function (e) {
         var smoke = Q('Smoke')
 
         old_smoke = smoke.items.splice(0, 400);
-        console.log(old_smoke)
         for (var i = 0; i < old_smoke.length; i++) {
             old_smoke[i].destroy();
         };
@@ -367,8 +366,6 @@ window.addEventListener("load", function (e) {
         
         launch_asteroids = false
         var asteroids = Q('Asteroid')
-        
-        console.log(asteroids)
         for (var i = 0; i < asteroids.items.length; i++) {
             asteroids.items[i].p.vx = 0;
         };
@@ -439,7 +436,7 @@ window.addEventListener("load", function (e) {
                     Q.pauseGame();
                     Q.state.set('is_paused', true)
                 }
-            // Pause game on 'M'    
+            // Mute music on 'M'    
             case 77:
                 muteMusic();
         }
@@ -447,7 +444,7 @@ window.addEventListener("load", function (e) {
 
     $mute_music.on('click', function() {
         muteMusic();
-    });
+    })
 
 
 
