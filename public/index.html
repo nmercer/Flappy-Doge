@@ -11,13 +11,21 @@
 </head>
 
 <body>
-    <div id="flash_screen"></div>
-    <canvas id="star_field"></canvas>
+
+    <!-- Loading Bar -->
+    <div id='loading'>
+      <div id='loading_container'>
+        <div id='loading_progress'></div>
+      </div>
+    </div>
+
+    <!-- Main Score -->
     <div id="stats">
         <div id="score"></div>
         <div id="coin_count">Ð<span>0</span></div>
     </div>
 
+    <!-- Popup window -->
     <div id="action_window">
         <div class="container">
             <h1 id="title">To The Moon!: The Doge Game</h1>
@@ -30,6 +38,13 @@
         </div>
     </div>
 
+    <!-- White Overlay for Flashing -->
+    <div id="flash_screen"></div>
+    
+    <!-- Starfield Background -->
+    <canvas id="star_field"></canvas>
+
+    <!-- Bottom Bar -->
     <div id="bottom-bar">
         <div id="highscore">Highscore: <span></span></div>
         <div id="progress_wrapper">
@@ -38,7 +53,6 @@
         <div id="options">
             <a id="mute_music">mute</a>    
         </div>
-        
     </div>
 
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>

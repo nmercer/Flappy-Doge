@@ -424,19 +424,6 @@ window.addEventListener("load", function (e) {
     }
 
 
-    // INIT GAME
-    // ==============================================
-
-    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0 });
-
-    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, sprites.png", function() {
-        Q.stageScene("startGame",1, { label: "Start Game" });
-        $game_canvas = $("#quintus");
-        playMusic();
-    });
-
-
-
     // USER INTERACTIONS
     // ==============================================
 
@@ -464,9 +451,22 @@ window.addEventListener("load", function (e) {
     })
 
 
+    // INIT GAME
+    // ==============================================
 
+    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0 });
 
-
-
+    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, sprites.png", function() {
+        Q.stageScene("startGame",1, { label: "Start Game" });
+        $game_canvas = $("#quintus");
+        playMusic();
+    }, {
+        progressCallback: function(loaded,total) {
+            $("#loading_progress").css('width', Math.floor(loaded/total*100) + "%");
+            if (loaded === total) {
+                $("#loading").fadeOut();
+            }
+        }
+    });
 
 });
