@@ -470,36 +470,49 @@ window.addEventListener("load", function (e) {
     }
 
     // MOBILE TOUCH
+    // document.addEventListener('touchstart', function(e) {
+    //     e.preventDefault();
+    //     var touch = e.touches[0];
+    //     // move player
+
+    //     var player = Q('Doge');
+
+    //     player.p.vy = -1000;
+    //     player.stage.insert(new Q.Smoke({
+    //         vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
+    //         vy: Math.round(Math.random() * (300 - -100 ) + -100),
+    //         scale: 3,
+    //         y: this.p.y + 50,
+    //         x: this.p.x - 50,
+    //         gravity: 0,
+    //         opacity: .5
+    //     }))
+    // }, false);
+
+
+
+    $mute_music.on('click', function() {
+        muteMusic();
+    })
+
     function initTouch() {
-        document.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            var touch = e.touches[0];
+        $('#touch_this').on('click', function() {
             
-            console.log('go')
-
-
-            var player = Q('Doge').items[0];
-
+            var player = Q("Doge").items[0];
             if (player) {
                 player.p.vy = -1000;
                 player.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 3,
-                    y: this.p.y + 50,
-                    x: this.p.x - 50,
+                    y: player.p.y + 50,
+                    x: player.p.x - 50,
                     gravity: 0,
                     opacity: .5
-                }))
-                
+                }))    
             }
-        }, false );
+        });
     }
-
-    $mute_music.on('click', function() {
-        muteMusic();
-    })
-  
 
 
     // INIT GAME
