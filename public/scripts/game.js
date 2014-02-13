@@ -218,8 +218,11 @@ window.addEventListener("load", function (e) {
 
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) { 
+                    Q.audio.play('ping.wav', {loop: false});
+
                     Q.state.inc("score", 1000000);
                     Q.state.inc('coins', 1);
+
                     this.stage.insert(new Q.Wow());
                     this.destroy();
                     flashScreen();
@@ -254,7 +257,8 @@ window.addEventListener("load", function (e) {
             });
 
             this.on("hit.sprite", function(collision) {
-                if(collision.obj.isA("Doge")) { 
+                if(collision.obj.isA("Doge")) {
+                    Q.audio.play('boom1.wav', {loop: false});
                     Q.state.set("game_over", true);
                     Q.stageScene("startGame",1, { label: "You Died" }); 
                     collision.obj.destroy();
@@ -412,7 +416,7 @@ window.addEventListener("load", function (e) {
 
     Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0 });
 
-    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png", function() {
+    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();
