@@ -16,13 +16,24 @@ window.addEventListener("load", function (e) {
 
 
     // Game states
-    var games_played = 0
-    ,   launch_asteroids = true
+    var   launch_asteroids = true
     ,   music_playing = localStorage.getItem('mute_music') || true;
 
 
-    // Constants
-    var MOON = 10000000;
+    // PLANET DISTANCES
+    var MOON = 250000          // level 1
+    ,   MARS = 35000000        // level 2
+    ,   JUPITER = 370000000    // level 3
+    ,   SATURN = 744000000     // level 4
+    ,   URANUS = 1607000000    // level 5
+    ,   NEPTUNE = 2680000000   // level 6
+    ,   PLUTO = 2670000000;    // level 7
+
+    // GAME SPRITE TYPES
+    var SPRITE_PLAYER = 1
+    ,   PARTICLES = 2
+    ,   SPRITE_ENEMY = 4
+    ,   PICKUP = 8;
 
     // Initialize Quintus
     var Q = window.Q = Quintus({ audioSupported: ['wav']})
@@ -37,9 +48,51 @@ window.addEventListener("load", function (e) {
     // ===============================================
 
     var player = window.player = {
-        highscore: localStorage.getItem('flappy_doge_highscore') || 0,
-        name: localStorage.getItem('flappy_doge_name') || false
+        name: localStorage.getItem('player_name') || false,
+        games_played: parseInt(localStorage.getItem('games_played')) || 0,
+        highscore: localStorage.getItem('player_highscore') || 0,
     }
+
+    // START SCREEN
+    // ===============================================
+    Q.scene('startGame',function(stage) {
+        // Set Games Played
+        player.games_played += 1
+        localStorage.setItem('games_played', player.games_played);
+
+        var current_score = Q.state.get('score')
+
+        $action_text.text(stage.options.label)
+
+        if (player.name && player.games_played > 1) {            
+            $action_text.html("Hello " + player.name + '!');
+            $player_name.hide();
+            $player_name.find('input').val(player.name)
+        } else {
+            $play_again_btn.on('click', function(event) {
+                localStorage.setItem('player_name', $player_name.find('input').val());
+                player.name = $player_name.find('input').val();
+            });
+        }
+
+        if (current_score > player.highscore) {
+            player.highscore = current_score
+            localStorage.setItem('player_highscore', current_score)
+        }
+        
+        $('#highscore span').text(player.highscore)
+         
+        $action_window.fadeIn();
+        $play_again_btn.focus();
+        $play_again_btn.on('click', function(event) {
+            Q.clearStages();
+            Q.stageScene('Level1');
+            Q.state.set('score', 0);
+            $action_window.fadeOut();
+            setTimeout(function(){$game_canvas.focus()}, 10)
+            launch_asteroids = true
+        });
+    });
 
 
     // MAIN GAME
@@ -53,13 +106,16 @@ window.addEventListener("load", function (e) {
         var coin_counter = 1;
 
         var level_counter = 80;          // Starting level
-        var LEVEL_RESET = 5;            // Static level reset
+        var LEVEL_RESET = 5;             // Static level reset
         var level_reset = LEVEL_RESET;   // How many astroids till we make it faster
         var lowest_level = 30;           // Fastest speed you can make it, smaller faster.
         var level_drop = 10;             // How much faster to make it every time
 
         Q.state.set('game_over', false);
         Q.state.set('coins', 0);
+
+        initTouch();
+
         $coin_count.find('span').text(Q.state.get("coins"))
 
         $score.text("0");
@@ -112,49 +168,7 @@ window.addEventListener("load", function (e) {
         });
     });
 
-    // START SCREEN
-    // ===============================================
-    Q.scene('startGame',function(stage) {
-        
-        games_played += 1
-
-        var current_score = Q.state.get('score')
-
-        $action_text.text(stage.options.label)
-        
-        if (player.name && games_played < 2) {
-            
-            $action_text.html("Hello " + player.name + '!');
-            $player_name.hide();
-            $player_name.find('input').val(player.name)
-
-        } else {
-            $play_again_btn.on('click', function(event) {
-                localStorage.setItem('flappy_doge_name', $player_name.find('input').val());
-            });
-        }
-
-        if (current_score > player.highscore) {
-            player.highscore = current_score
-            localStorage.setItem('flappy_doge_highscore', current_score)
-        }
-        
-        $('#highscore span').text(player.highscore)
-         
-        $action_window.fadeIn();
-        $play_again_btn.focus();
-        $play_again_btn.on('click', function(event) {
-            Q.clearStages();
-            Q.stageScene('Level1');
-            Q.state.set('score', 0);
-            $action_window.fadeOut();
-            setTimeout(function(){$game_canvas.focus()}, 10)
-            launch_asteroids = true
-        });
-    });
-
     
-
     // DOGE!
     // ===============================================
     Q.Sprite.extend("Doge", {
@@ -167,6 +181,8 @@ window.addEventListener("load", function (e) {
                 y: 300,
                 scale: 0.5,
                 gravity: 3,
+                type: SPRITE_PLAYER,
+                collisionMask: SPRITE_ENEMY | PICKUP
             });
             this.add('2d');
         },
@@ -176,7 +192,7 @@ window.addEventListener("load", function (e) {
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 1,
                     y: this.p.y + 50,
-                    x: this.p.x - 100,
+                    x: this.p.x - 50,
                     gravity: 0,
                     opacity: .5
                 }))
@@ -188,7 +204,7 @@ window.addEventListener("load", function (e) {
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 3,
                     y: this.p.y + 50,
-                    x: this.p.x - 100,
+                    x: this.p.x - 50,
                     gravity: 0,
                     opacity: .5
                 }))
@@ -214,7 +230,9 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: .2
+                scale: .2,
+                collisionMask: 0,
+                type: PICKUP,
             });
 
             this.on("hit.sprite", function(collision) {
@@ -223,6 +241,8 @@ window.addEventListener("load", function (e) {
 
                     Q.state.inc("score", 1000000);
                     Q.state.inc('coins', 1);
+
+                    console.log()
 
                     this.stage.insert(new Q.Wow());
                     this.destroy();
@@ -255,6 +275,8 @@ window.addEventListener("load", function (e) {
                 scale: Math.round(Math.random() * (3 - 2 ) + 2),
                 speed: parseFloat((Math.random() * (0.09 - 0.01) + 0.01).toFixed(4)),
                 angle: 0,
+                type: SPRITE_ENEMY,
+                collisionMask: SPRITE_PLAYER,
             });
 
             this.on("hit.sprite", function(collision) {
@@ -311,8 +333,8 @@ window.addEventListener("load", function (e) {
             this._super(p, {
                 label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
                 color: "white",
-                x: Q.width/2,
-                y: 100,
+                //x: Q.width/2,
+                //y: 100,
                 counter: 1,
             });
         },
@@ -332,6 +354,7 @@ window.addEventListener("load", function (e) {
         init: function(p) {
             this._super(p, {
                 asset: "smoke.png",
+                type: PARTICLES,
             });
         }
     });
@@ -418,8 +441,8 @@ window.addEventListener("load", function (e) {
 
     function updateProgress(score) {
         $progress_bar.css('width', score / MOON * 100 + '%' );
-        if (score >= MOON) {
-            // MOOOOON
+        if (score === MOON) {
+            
         } 
     }
 
@@ -446,20 +469,49 @@ window.addEventListener("load", function (e) {
         }
     }
 
+    // MOBILE TOUCH
+    function initTouch() {
+        document.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            var touch = e.touches[0];
+            
+            console.log('go')
+
+
+            var player = Q('Doge').items[0];
+
+            if (player) {
+                player.p.vy = -1000;
+                player.stage.insert(new Q.Smoke({
+                    vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
+                    vy: Math.round(Math.random() * (300 - -100 ) + -100),
+                    scale: 3,
+                    y: this.p.y + 50,
+                    x: this.p.x - 50,
+                    gravity: 0,
+                    opacity: .5
+                }))
+                
+            }
+        }, false );
+    }
+
     $mute_music.on('click', function() {
         muteMusic();
     })
+  
 
 
     // INIT GAME
     // ==============================================
 
-    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0 });
+    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1 });
 
     Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, sprites.png", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();
+        
     }, {
         progressCallback: function(loaded,total) {
             $("#loading_progress").css('width', Math.floor(loaded/total*100) + "%");

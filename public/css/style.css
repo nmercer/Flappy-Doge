@@ -48,6 +48,7 @@ canvas {
     font-size: 144px;
     text-align: center;
     font-weight: bold;
+    z-index: 10;
 }
 #coin_count {
     font-size: 30px;
