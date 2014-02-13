@@ -47,6 +47,7 @@ window.addEventListener("load", function (e) {
     Q.scene("Level1", function (stage) {
         var player = stage.insert(new Q.Doge());
         var asteroid = stage.insert(new Q.Asteroid());
+        // var boom = stage.insert(new Q.Boom());
 
         var counter = 1;
         var coin_counter = 1;
@@ -278,6 +279,21 @@ window.addEventListener("load", function (e) {
             }
         }
     })
+
+    // Q.Sprite.extend("Boom", {
+    //     init: function(p) {
+    //         this._super({asset: "sprites.png"});
+    //     }
+    // });
+
+    // Q.sheet("Boom",
+    //     "sprites.png",
+    //     {
+    //       tilew: 40,  // Each tile is 40 pixels wide
+    //       tileh: 40,  // and 40 pixels tall
+    //       sx: 0,   // start the sprites at x=0
+    //       sy: 0    // and y=0
+    //      });
     
     // WOW
     // ===============================================
@@ -365,7 +381,7 @@ window.addEventListener("load", function (e) {
         };
     }
 
-
+    // Functions and shit
     function stopAsteroids() {
         
         launch_asteroids = false
@@ -408,15 +424,12 @@ window.addEventListener("load", function (e) {
     }
 
 
-
-
-
     // INIT GAME
     // ==============================================
 
     Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0 });
 
-    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav", function() {
+    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, sprites.png", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();

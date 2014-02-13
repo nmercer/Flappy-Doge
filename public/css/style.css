@@ -49,7 +49,7 @@ canvas {
 	margin: 0 50px;
 	border-radius: 5px;
 	padding: 3px;
-	background-image: url('/images/small_moon.png');
+	/*background-image: url('/images/small_moon.png');*/
 	background-repeat: no-repeat;
 	background-position: right;
 	background-size: 20px;
