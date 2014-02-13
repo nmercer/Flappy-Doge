@@ -56,7 +56,6 @@ window.addEventListener("load", function (e) {
     // START SCREEN
     // ===============================================
     Q.scene('startGame',function(stage) {
-        
         // Set Games Played
         player.games_played += 1
         localStorage.setItem('games_played', player.games_played);
@@ -114,6 +113,8 @@ window.addEventListener("load", function (e) {
 
         Q.state.set('game_over', false);
         Q.state.set('coins', 0);
+
+        initTouch();
 
         $coin_count.find('span').text(Q.state.get("coins"))
 
@@ -468,9 +469,37 @@ window.addEventListener("load", function (e) {
         }
     }
 
+    // MOBILE TOUCH
+    function initTouch() {
+        document.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            var touch = e.touches[0];
+            
+            console.log('go')
+
+
+            var player = Q('Doge').items[0];
+
+            if (player) {
+                player.p.vy = -1000;
+                player.stage.insert(new Q.Smoke({
+                    vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
+                    vy: Math.round(Math.random() * (300 - -100 ) + -100),
+                    scale: 3,
+                    y: this.p.y + 50,
+                    x: this.p.x - 50,
+                    gravity: 0,
+                    opacity: .5
+                }))
+                
+            }
+        }, false );
+    }
+
     $mute_music.on('click', function() {
         muteMusic();
     })
+  
 
 
     // INIT GAME
@@ -482,6 +511,7 @@ window.addEventListener("load", function (e) {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();
+        
     }, {
         progressCallback: function(loaded,total) {
             $("#loading_progress").css('width', Math.floor(loaded/total*100) + "%");
