@@ -41,6 +41,52 @@ window.addEventListener("load", function (e) {
         name: localStorage.getItem('flappy_doge_name') || false
     }
 
+    // START SCREEN
+    // ===============================================
+    Q.scene('startGame',function(stage) {
+        
+        games_played += 1
+
+        var current_score = Q.state.get('score')
+
+        $action_text.text(stage.options.label)
+
+        console.log(games_played)
+
+        if (player.name && games_played <= 2) {
+
+            console.log('yup')
+            
+            $action_text.html("Hello " + player.name + '!');
+            $player_name.hide();
+            $player_name.find('input').val(player.name)
+
+        } else {
+            $play_again_btn.on('click', function(event) {
+                localStorage.setItem('flappy_doge_name', $player_name.find('input').val());
+                player.name = $player_name.find('input').val();
+            });
+        }
+
+        if (current_score > player.highscore) {
+            player.highscore = current_score
+            localStorage.setItem('flappy_doge_highscore', current_score)
+        }
+        
+        $('#highscore span').text(player.highscore)
+         
+        $action_window.fadeIn();
+        $play_again_btn.focus();
+        $play_again_btn.on('click', function(event) {
+            Q.clearStages();
+            Q.stageScene('Level1');
+            Q.state.set('score', 0);
+            $action_window.fadeOut();
+            setTimeout(function(){$game_canvas.focus()}, 10)
+            launch_asteroids = true
+        });
+    });
+
 
     // MAIN GAME
     // ===============================================
@@ -112,46 +158,7 @@ window.addEventListener("load", function (e) {
         });
     });
 
-    // START SCREEN
-    // ===============================================
-    Q.scene('startGame',function(stage) {
-        
-        games_played += 1
-
-        var current_score = Q.state.get('score')
-
-        $action_text.text(stage.options.label)
-        
-        if (player.name && games_played < 2) {
-            
-            $action_text.html("Hello " + player.name + '!');
-            $player_name.hide();
-            $player_name.find('input').val(player.name)
-
-        } else {
-            $play_again_btn.on('click', function(event) {
-                localStorage.setItem('flappy_doge_name', $player_name.find('input').val());
-            });
-        }
-
-        if (current_score > player.highscore) {
-            player.highscore = current_score
-            localStorage.setItem('flappy_doge_highscore', current_score)
-        }
-        
-        $('#highscore span').text(player.highscore)
-         
-        $action_window.fadeIn();
-        $play_again_btn.focus();
-        $play_again_btn.on('click', function(event) {
-            Q.clearStages();
-            Q.stageScene('Level1');
-            Q.state.set('score', 0);
-            $action_window.fadeOut();
-            setTimeout(function(){$game_canvas.focus()}, 10)
-            launch_asteroids = true
-        });
-    });
+    
 
     
 
