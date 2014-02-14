@@ -410,7 +410,8 @@ window.addEventListener("load", function (e) {
                 "Very Win", 
                 "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
                 "such truasre",
-                "every doge has its day"
+                "every doge has its day",
+                "FUN doge dodgein'"
             ]; // Todo - Add way more
         var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
 
