@@ -367,13 +367,15 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.UI.Text.extend("Wow", {
         init:function(p) {
-            var wow_choices = ["wow",
-                               "To The Moon!",
-                               "Much Coin", 
-                               "Very Win", 
-                               "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
-                               "such truasre",
-                               "every doge has its day"]; // Todo - Add way more
+            var wow_choices = [
+                "wow",
+                "To The Moon!",
+                "Much Coin", 
+                "Very Win", 
+                "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
+                "such truasre",
+                "every doge has its day"
+            ]; // Todo - Add way more
 
             // Todo - Spawn these in random places, effects?
             this._super(p, {
