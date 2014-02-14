@@ -198,12 +198,12 @@ window.addEventListener("load", function (e) {
     Q.Sprite.extend("Doge", {
         init:function(p) {
             this._super(p, {
-                asset: "doge.png",
+                asset: "doge2.png",
                 jumpSpeed: -400,
                 speed: 300,
                 x: Q.width / 6, 
                 y: 300,
-                scale: 0.5,
+                scale: 0.8,
                 gravity: 3,
                 type: SPRITE_PLAYER,
                 collisionMask: SPRITE_ENEMY | PICKUP
@@ -215,7 +215,7 @@ window.addEventListener("load", function (e) {
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 1,
-                    y: this.p.y + 50,
+                    y: this.p.y + 60,
                     x: this.p.x - 50,
                     gravity: 0,
                     opacity: .5
@@ -229,7 +229,7 @@ window.addEventListener("load", function (e) {
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 3,
-                    y: this.p.y + 50,
+                    y: this.p.y + 60,
                     x: this.p.x - 50,
                     gravity: 0,
                     opacity: .5
@@ -384,7 +384,7 @@ window.addEventListener("load", function (e) {
             // Todo - Spawn these in random places, effects?
             this._super(p, {
                 label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
-                color: wow_color_choices[Math.floor(Math.random() * wow_choices.length)],
+                color: wow_color_choices[Math.floor(Math.random() * wow_choices.length)] || 'white',
                 x: Q.width/2,
                 y: 100,
                 counter: 1,
@@ -402,23 +402,23 @@ window.addEventListener("load", function (e) {
         }
     });
 
-    function generateSuchText() {
-        var wow_choices = [
-                "wow",
-                "To The Moon!",
-                "Much Coin", 
-                "Very Win", 
-                "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
-                "such truasre",
-                "every doge has its day",
-                "FUN doge dodgein'"
-            ]; // Todo - Add way more
-        var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
+    // function generateSuchText() {
+    //     var wow_choices = [
+    //             "wow",
+    //             "To The Moon!",
+    //             "Much Coin", 
+    //             "Very Win", 
+    //             "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
+    //             "such truasre",
+    //             "every doge has its day",
+    //             "FUN doge dodgein'"
+    //         ]; // Todo - Add way more
+    //     var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
 
-        var such_text = $('<div>'+  + '</div>')
+    //     var such_text = $('<div>'+  + '</div>')
 
-        $('document').append('<div')
-    }
+    //     $('document').append('<div>')
+    // }
 
     // MUCH SMOKE TRAILS
     // ===============================================
@@ -592,7 +592,7 @@ window.addEventListener("load", function (e) {
 
     Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1, superman_sent: false});
 
-    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
+    Q.load("doge2.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();
