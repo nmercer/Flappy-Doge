@@ -222,6 +222,8 @@ window.addEventListener("load", function (e) {
                 }))
 
             if(Q.inputs['fire']) { 
+                Q.audio.play('thrust.wav');
+
                 this.p.vy = -1000;
                 this.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
@@ -362,21 +364,6 @@ window.addEventListener("load", function (e) {
             }
         }
     })
-
-    // Q.Sprite.extend("Boom", {
-    //     init: function(p) {
-    //         this._super({asset: "sprites.png"});
-    //     }
-    // });
-
-    // Q.sheet("Boom",
-    //     "sprites.png",
-    //     {
-    //       tilew: 40,  // Each tile is 40 pixels wide
-    //       tileh: 40,  // and 40 pixels tall
-    //       sx: 0,   // start the sprites at x=0
-    //       sy: 0    // and y=0
-    //      });
     
     // WOW
     // ===============================================
@@ -604,7 +591,7 @@ window.addEventListener("load", function (e) {
 
     Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1, superman_sent: false});
 
-    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png", function() {
+    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();
