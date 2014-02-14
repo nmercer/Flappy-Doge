@@ -131,12 +131,6 @@ window.addEventListener("load", function (e) {
         stage.on("step",function() {
             counter += 1;
 
-            // Todo - Set this to a good score
-            if (!Q.state.get('superman_sent') && Q.state.get('score') > 1000) {
-                stage.insert(new Q.Superman({y: Math.floor(Math.random() * Q.height) + 1}));
-                Q.state.set("superman_sent", true);
-            }
-
             if (launch_asteroids) {
 
                 if ((counter % level_counter) === 0) {
@@ -144,6 +138,12 @@ window.addEventListener("load", function (e) {
                     stage.insert(new Q.Asteroid({
                         y: Math.floor(Math.random() * Q.height) + 1,
                     }));
+
+                    // RANDOM SUPERMAN
+                    if (!Q.state.get('superman_sent') && (Math.floor(Math.random() * 500 ) + 1 ) === 111) {
+                        stage.insert(new Q.Superman({y: Math.floor(Math.random() * Q.height) + 1}));
+                        Q.state.set("superman_sent", true);
+                    }
 
                     coin_counter += 1;
 
@@ -156,20 +156,26 @@ window.addEventListener("load", function (e) {
                     }
                 }
 
+                // HOUSEKEEPING
+                // Clear the smoke every 100 steps
+                if (counter % 100 === 0) {
+                    clearSmoke();
+                }
+
+                // SPAWN DOGE COINS
                 // Todo - Make this more random
                 if ((coin_counter % 5) === 0) {
                     coin_counter = 1;
 
-                    if ((Math.floor(Math.random() * 1000) + 1) === 888) {
-                        for(var i = 0; i < Q.height; i=i+20) {
-                            stage.insert(new Q.Coin({y: i}));
+                    // Nick's Super Coin Spawn
+                    if (( Math.floor(Math.random() * 1000 ) + 1 ) === 888) {
+                        for ( var i = 0; i < Q.height; i = i + 20 ) {
+                            stage.insert(new Q.Coin({ y: i }));
                         }
                     }
                     else {
                         stage.insert(new Q.Coin({y: Math.floor(Math.random() * Q.height) + 1}));
                     }
-
-                    clearSmoke(); // doesnt have to be here, but it was convenient at the time
                 }
                 updateProgress(Q.state.get('score'));
             }
