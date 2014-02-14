@@ -22,7 +22,7 @@ window.addEventListener("load", function (e) {
 
 
     // PLANET DISTANCES
-    var MOON = 250000          // level 1
+    var MOON = 2500000         // level 1
     ,   MARS = 35000000        // level 2
     ,   JUPITER = 370000000    // level 3
     ,   SATURN = 744000000     // level 4
@@ -34,7 +34,8 @@ window.addEventListener("load", function (e) {
     var SPRITE_PLAYER = 1
     ,   PARTICLES = 2
     ,   SPRITE_ENEMY = 4
-    ,   PICKUP = 8;
+    ,   PICKUP = 8
+    ,   UI = 16;
 
     
     // SCORE WHEN TO SEND SPECIAL SHIT
@@ -391,13 +392,17 @@ window.addEventListener("load", function (e) {
                 "every doge has its day"
             ]; // Todo - Add way more
 
+            var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
+
             // Todo - Spawn these in random places, effects?
             this._super(p, {
                 label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
-                color: "white",
-                //x: Q.width/2,
-                //y: 100,
+                color: wow_color_choices[Math.floor(Math.random() * wow_choices.length)],
+                x: Q.width/2,
+                y: 100,
                 counter: 1,
+                type: UI,
+                style: '100px Comic Sans MS'
             });
         },
 
@@ -409,6 +414,23 @@ window.addEventListener("load", function (e) {
             }
         }
     });
+
+    function generateSuchText() {
+        var wow_choices = [
+                "wow",
+                "To The Moon!",
+                "Much Coin", 
+                "Very Win", 
+                "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
+                "such truasre",
+                "every doge has its day"
+            ]; // Todo - Add way more
+        var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
+
+        var such_text = $('<div>'+  + '</div>')
+
+        $('document').append('<div')
+    }
 
     // MUCH SMOKE TRAILS
     // ===============================================
