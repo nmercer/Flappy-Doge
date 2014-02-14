@@ -22,7 +22,7 @@ window.addEventListener("load", function (e) {
 
 
     // PLANET DISTANCES
-    var MOON = 2500000         // level 1
+    var MOON = 25000000         // level 1
     ,   MARS = 35000000        // level 2
     ,   JUPITER = 370000000    // level 3
     ,   SATURN = 744000000     // level 4
