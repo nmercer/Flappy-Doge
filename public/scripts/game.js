@@ -100,7 +100,7 @@ window.addEventListener("load", function (e) {
     Q.scene("Level1", function (stage) {
         var player = stage.insert(new Q.Doge());
         var asteroid = stage.insert(new Q.Asteroid());
-        // var boom = stage.insert(new Q.Boom());
+        Q.state.set("superman_sent", false);
 
         var counter = 1;
         var coin_counter = 1;
@@ -122,6 +122,12 @@ window.addEventListener("load", function (e) {
 
         stage.on("step",function() {
             counter += 1;
+
+            // Todo - Set this to a good score
+            if (!Q.state.get('superman_sent') && Q.state.get('score') > 1000) {
+                stage.insert(new Q.Superman({y: Math.floor(Math.random() * Q.height) + 1}));
+                Q.state.set("superman_sent", true);
+            }
 
             if (launch_asteroids) {
 
@@ -297,6 +303,43 @@ window.addEventListener("load", function (e) {
             this.p.angle += Math.round(Math.random() * 5);
 
             if (this.p.x < 10) {
+                this.destroy();
+            }
+        }
+    })
+
+    // SUPERMAN
+    // ===============================================
+    Q.Sprite.extend("Superman", {
+        init: function(p) {
+            this._super(p, {
+                asset: "superman.png",
+                x: Q.width+50,
+                y: 500,
+                vy: 0,
+                vx: -400,
+                scale: 1,
+                speed: parseFloat((Math.random() * (0.09 - 0.01) + 0.01).toFixed(4)),
+                type: SPRITE_ENEMY,
+                collisionMask: SPRITE_PLAYER,
+            });
+
+            this.on("hit.sprite", function(collision) {
+                if(collision.obj.isA("Doge")) {
+                    Q.audio.play('boom1.wav', {loop: false});
+                    Q.state.set("game_over", true);
+                    Q.stageScene("startGame",1, { label: "You Died" }); 
+                    collision.obj.destroy();
+                    stopAsteroids();
+                }
+            });
+        },
+
+        step: function(dt) {
+            this.p.x += this.p.vx * this.p.speed;
+            this.p.y += this.p.vy * this.p.speed;
+
+            if (this.p.x < -100) {
                 this.destroy();
             }
         }
@@ -520,9 +563,9 @@ window.addEventListener("load", function (e) {
     // INIT GAME
     // ==============================================
 
-    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1 });
+    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1, superman_sent: false});
 
-    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, sprites.png", function() {
+    Q.load("doge.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png", function() {
         Q.stageScene("startGame",1, { label: "Start Game" });
         $game_canvas = $("#quintus");
         playMusic();
