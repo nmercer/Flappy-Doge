@@ -35,6 +35,9 @@ window.addEventListener("load", function (e) {
     ,   SPRITE_ENEMY = 4
     ,   PICKUP = 8;
 
+    // SCORE WHEN TO SEND SPECIAL SHIT
+    var SEND_SUPERMAN_SCORE = 1000;
+
     // Initialize Quintus
     var Q = window.Q = Quintus({ audioSupported: ['wav']})
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
@@ -100,7 +103,6 @@ window.addEventListener("load", function (e) {
     Q.scene("Level1", function (stage) {
         var player = stage.insert(new Q.Doge());
         var asteroid = stage.insert(new Q.Asteroid());
-        Q.state.set("superman_sent", false);
 
         var counter = 1;
         var coin_counter = 1;
@@ -113,6 +115,7 @@ window.addEventListener("load", function (e) {
 
         Q.state.set('game_over', false);
         Q.state.set('coins', 0);
+        Q.state.set("superman_sent", false);
 
         initTouch();
 
@@ -124,7 +127,7 @@ window.addEventListener("load", function (e) {
             counter += 1;
 
             // Todo - Set this to a good score
-            if (!Q.state.get('superman_sent') && Q.state.get('score') > 1000) {
+            if (!Q.state.get('superman_sent') && Q.state.get('score') > SEND_SUPERMAN_SCORE) {
                 stage.insert(new Q.Superman({y: Math.floor(Math.random() * Q.height) + 1}));
                 Q.state.set("superman_sent", true);
             }
