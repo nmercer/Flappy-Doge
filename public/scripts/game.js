@@ -17,7 +17,8 @@ window.addEventListener("load", function (e) {
 
     // Game states
     var   launch_asteroids = true
-    ,   music_playing = localStorage.getItem('mute_music') || true;
+    ,     music_playing = localStorage.getItem('mute_music') || true
+    ,     games_played_this_session = 0;
 
 
     // PLANET DISTANCES
@@ -35,6 +36,7 @@ window.addEventListener("load", function (e) {
     ,   SPRITE_ENEMY = 4
     ,   PICKUP = 8;
 
+    
     // Initialize Quintus
     var Q = window.Q = Quintus({ audioSupported: ['wav']})
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
@@ -43,6 +45,8 @@ window.addEventListener("load", function (e) {
         })
         .controls()
         .enableSound();
+
+    
 
     // PLAYER
     // ===============================================
@@ -53,10 +57,14 @@ window.addEventListener("load", function (e) {
         highscore: localStorage.getItem('player_highscore') || 0,
     }
 
+    
+
+
     // START SCREEN
     // ===============================================
     Q.scene('startGame',function(stage) {
         // Set Games Played
+        games_played_this_session += 1;
         player.games_played += 1
         localStorage.setItem('games_played', player.games_played);
 
@@ -64,7 +72,7 @@ window.addEventListener("load", function (e) {
 
         $action_text.text(stage.options.label)
 
-        if (player.name && player.games_played > 1) {            
+        if (player.name && games_played_this_session === 1) {            
             $action_text.html("Hello " + player.name + '!');
             $player_name.hide();
             $player_name.find('input').val(player.name)
@@ -318,7 +326,7 @@ window.addEventListener("load", function (e) {
                 y: 500,
                 vy: 0,
                 vx: -400,
-                scale: 1,
+                scale: .5,
                 speed: parseFloat((Math.random() * (0.09 - 0.01) + 0.01).toFixed(4)),
                 type: SPRITE_ENEMY,
                 collisionMask: SPRITE_PLAYER,
