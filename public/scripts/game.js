@@ -203,6 +203,7 @@ window.addEventListener("load", function (e) {
                 speed: 300,
                 x: Q.width / 6, 
                 y: 300,
+                z: 10,
                 scale: 0.8,
                 gravity: 3,
                 type: SPRITE_PLAYER,
@@ -211,28 +212,54 @@ window.addEventListener("load", function (e) {
             this.add('2d');
         },
         step: function(p) {
+            // Engine 1
             this.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
                     scale: 1,
-                    y: this.p.y + 60,
+                    y: this.p.y + 50,
+                    x: this.p.x - 50,
+                    gravity: 0,
+                    opacity: .5
+                }))
+            // Engine 2
+            this.stage.insert(new Q.Smoke({
+                    vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
+                    vy: Math.round(Math.random() * (300 - -100 ) + -100),
+                    scale: 1,
+                    y: this.p.y + 45,
+                    x: this.p.x - 15,
+                    gravity: 0,
+                    opacity: .5
+                }))
+
+
+            // THRUSTING!!!!!
+            if(Q.inputs['fire']) { 
+                Q.audio.play('thrust.wav');
+
+                this.p.vy = -1000;
+
+                // Engine 1
+                this.stage.insert(new Q.Smoke({
+                    vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
+                    vy: Math.round(Math.random() * (300 - -100 ) + -100),
+                    scale: 3,
+                    y: this.p.y + 50,
                     x: this.p.x - 50,
                     gravity: 0,
                     opacity: .5
                 }))
 
-            if(Q.inputs['fire']) { 
-                Q.audio.play('thrust.wav');
-
-                this.p.vy = -1000;
+                // Engine 2
                 this.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
-                    scale: 3,
-                    y: this.p.y + 60,
-                    x: this.p.x - 50,
+                    scale: 2.8,
+                    y: this.p.y + 45,
+                    x: this.p.x - 15,
                     gravity: 0,
-                    opacity: .5
+                    opacity: .3
                 }))
             }
             if(this.p.y - 100 > Q.height) {
@@ -243,6 +270,18 @@ window.addEventListener("load", function (e) {
             if(this.p.y < 0) {
                 this.p.y = 0;
             }
+        }
+    });
+
+    // MUCH SMOKE TRAILS
+    // ===============================================
+    Q.MovingSprite.extend("Smoke",{
+        init: function(p) {
+            this._super(p, {
+                asset: "smoke.png",
+                type: PARTICLES,
+                z: 8
+            });
         }
     });
 
@@ -419,17 +458,6 @@ window.addEventListener("load", function (e) {
 
     //     $('document').append('<div>')
     // }
-
-    // MUCH SMOKE TRAILS
-    // ===============================================
-    Q.MovingSprite.extend("Smoke",{
-        init: function(p) {
-            this._super(p, {
-                asset: "smoke.png",
-                type: PARTICLES,
-            });
-        }
-    });
 
     // STARS (refactor this bullshit)
     // ===============================================
