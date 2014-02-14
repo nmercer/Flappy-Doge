@@ -54,3 +54,8 @@ RDS Database: XXXXX
 ```
 * eb stop/start - start or stop the running instance
 * git aws.push - the big one, writes git changes up to AWS
+
+# MOR COMMENT
+
+use wow such txt in MAYBE CAPS
+
