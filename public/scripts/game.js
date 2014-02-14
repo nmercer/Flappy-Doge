@@ -255,11 +255,11 @@ window.addEventListener("load", function (e) {
                 this.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
-                    scale: 2.8,
+                    scale: 2.9,
                     y: this.p.y + 45,
                     x: this.p.x - 15,
                     gravity: 0,
-                    opacity: .3
+                    opacity: .4
                 }))
             }
             if(this.p.y - 100 > Q.height) {
