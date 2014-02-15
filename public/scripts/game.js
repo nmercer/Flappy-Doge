@@ -72,6 +72,8 @@ window.addEventListener("load", function (e) {
         player.games_played += 1
         localStorage.setItem('games_played', player.games_played);
 
+        getScore(); // Todo - Move this
+
         var current_score = Q.state.get('score')
 
         $action_text.text(stage.options.label)
