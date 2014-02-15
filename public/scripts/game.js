@@ -2,7 +2,7 @@ var prod = false;
 if(prod) {
     var URL = 'dogeinspace-env-qtuur5rufi.elasticbeanstalk.com'
 } else {
-    var URL = 'http://127.0.0.1:8900/'
+    var URL = 'http://localhost:8900/'
 }
 
 window.addEventListener("load", function (e) {
@@ -559,7 +559,7 @@ window.addEventListener("load", function (e) {
     function getScore() {
         $.ajax({
             type: "POST",
-            url: URL + '/scoreboard',
+            url: URL + 'scoreboard',
             success: function (response) {
                 if(response.status === 'success') {
                     console.log(response); // Todo - Orry do something with this
