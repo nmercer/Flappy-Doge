@@ -1,6 +1,5 @@
 
 window.addEventListener("load", function (e) {
-
     // Elements
     var $score = $("#score")
     ,   $action_window = $("#action_window")
@@ -37,6 +36,13 @@ window.addEventListener("load", function (e) {
     ,   SPRITE_ENEMY = 4
     ,   PICKUP = 8
     ,   UI = 16;
+
+    var prod = true;
+    if(prod) {
+        var URL = 'dogeinspace-env-qtuur5rufi.elasticbeanstalk.com'
+    } else {
+        var URL = 'http://127.0.0.1:8900/'
+    }
 
     
     // SCORE WHEN TO SEND SPECIAL SHIT

@@ -16,9 +16,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json()); 
 app.use(express.urlencoded());
 
+// Todo - Setup some sort of prod BS
+prod = true;
+
 // DEV
 // ===============================================
-if ('development' == app.get('env')) {
+// if ('development' == app.get('env')) {
+if(!prod) {
 	console.log('Using development settings.');
   	app.set('connection', mysql.createConnection({
    		host: '127.0.0.1',
@@ -30,7 +34,8 @@ if ('development' == app.get('env')) {
 
 // PROD
 // ===============================================
-if ('production' == app.get('env')) {
+// if ('production' == app.get('env')) {
+else { 
 	console.log('Using production settings.');
   	app.set('connection', mysql.createConnection({
     	host: process.env.RDS_HOSTNAME,
