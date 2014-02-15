@@ -26,7 +26,6 @@ window.addEventListener("load", function (e) {
     ,     game_is_loading = true;
 
 
-
     // PLANET DISTANCES
     var MOON = 250000000         // level 1
     ,   MARS = 35000000        // level 2
@@ -66,8 +65,6 @@ window.addEventListener("load", function (e) {
     }
 
     
-
-
     // START SCREEN
     // ===============================================
     Q.scene('startGame',function(stage) {
@@ -372,7 +369,7 @@ window.addEventListener("load", function (e) {
                     Q.stageScene("startGame",1, { label: "You were obliterated!" }); 
                     collision.obj.destroy();
                     stopAsteroids();
-                    saveScore('Nick Mercer', Q.state.get('score')); // Todo - How do we get name var?
+                    saveScore(player.name, Q.state.get('score')); // Todo - How do we get name var?
                 }
             });
         },
@@ -556,13 +553,18 @@ window.addEventListener("load", function (e) {
     }
 
     // Todo - Orry - Needs to be called when we show scoreboard, not sure what you wannna do with that
-    function getScore() {
+    function loadHighscores() {
         $.ajax({
             type: "POST",
             url: URL + 'scoreboard',
             success: function (response) {
                 if(response.status === 'success') {
-                    console.log(response); // Todo - Orry do something with this
+                    console.log(response);
+                    $('#scoreboard ul').html('')
+                    for (var i = 0; i < response.scores.length; i++) {
+                        var score = response.scores[i];
+                        $('#scoreboard ul').append('<li><strong>' + score.NAME + '</strong> -- <span>' + score.SCORE + '</span></li>')
+                    };
                 }
                 else {
                     // Todo - Some sort of error
@@ -602,6 +604,13 @@ window.addEventListener("load", function (e) {
         event.preventDefault();
         localStorage.clear();
         window.location.reload();
+    });
+
+    $('#view_scoreboard').on('click', function(e) {
+        e.preventDefault();
+        loadHighscores();
+        $('#scoreboard').fadeToggle();
+
     })
 
     function initTouch() {
@@ -652,7 +661,7 @@ window.addEventListener("load", function (e) {
         } else {
             $player_name.find('input').focus();
         }
-        getScore();
+        loadHighscores();
     }
 
 

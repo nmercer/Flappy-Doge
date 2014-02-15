@@ -111,10 +111,11 @@ h2 {
 }
 #options {
     display: inline-block;
-}
-#mute_music {
     float: right;
     padding-right: 20px
+}
+#mute_music {
+    
 }
 #highscore {
     display: inline-block;
@@ -161,6 +162,8 @@ h2 {
     box-shadow: inset 0 1px #B46ECF, 0 1px 2px rgba(0, 0, 0, 0.56);
     border-bottom: 3px solid #691D81;
     text-shadow: 0 -01px #44107C;
+    display: block;
+    margin: 0 auto;
 }
 #action_window button:hover {
     background: #B459B1;
@@ -213,6 +216,21 @@ h2 {
 #address {
     font-size: 10px;
     color: #808080;
+}
+
+#scoreboard {
+    display: none;
+    position: absolute;
+    z-index: 18;
+    background: white;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    padding: 30px;
 }
 
 
