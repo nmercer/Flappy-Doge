@@ -1,33 +1,6 @@
 
 window.addEventListener("load", function (e) {
 
-    $.ajax({
-        type: "POST",
-        url: 'http://127.0.0.1:8900/save',
-        dataType: 'json',
-        data: {'name':'Nick', 'score': 12345678},
-        success: function (response) {
-            if(response.status === 'success') {
-            }
-            else {
-                // Todo - Some sort of error
-            }
-        }
-    });
-
-    $.ajax({
-        type: "POST",
-        url: 'http://127.0.0.1:8900/scoreboard',
-        success: function (response) {
-            if(response.status === 'success') {
-                console.log(response); // Todo - Orry do something with this
-            }
-            else {
-                // Todo - Some sort of error
-            }
-        }
-    });
-
     // Elements
     var $score = $("#score")
     ,   $action_window = $("#action_window")
@@ -383,6 +356,7 @@ window.addEventListener("load", function (e) {
                     Q.stageScene("startGame",1, { label: "You were obliterated!" }); 
                     collision.obj.destroy();
                     stopAsteroids();
+                    saveScore('Nick Mercer', Q.state.get('score')); // Todo - How do we get name var?
                 }
             });
         },
@@ -547,6 +521,38 @@ window.addEventListener("load", function (e) {
         if (score === MOON) {
             
         } 
+    }
+
+    function saveScore(name, score) {    
+        $.ajax({
+            type: "POST",
+            url: 'http://127.0.0.1:8900/save',
+            dataType: 'json',
+            data: {'name':name, 'score': score},
+            success: function (response) {
+                if(response.status === 'success') {
+                }
+                else {
+                    // Todo - Some sort of error
+                }
+            }
+        });
+    }
+
+    // Todo - Orry - Needs to be called when we show scoreboard, not sure what you wannna do with that
+    function getScore() {
+        $.ajax({
+            type: "POST",
+            url: 'http://127.0.0.1:8900/scoreboard',
+            success: function (response) {
+                if(response.status === 'success') {
+                    console.log(response); // Todo - Orry do something with this
+                }
+                else {
+                    // Todo - Some sort of error
+                }
+            }
+        });
     }
 
 
