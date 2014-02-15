@@ -1,4 +1,5 @@
 var prod = true;
+
 if(prod) {
     var SAVE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/save'
     var SCORE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/scoreboard'
