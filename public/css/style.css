@@ -50,6 +50,12 @@ canvas {
     font-weight: bold;
     z-index: 10;
 }
+
+#stats #score span {
+    display: inline-block;
+    margin: 0 -10px 0 -30px;
+}
+
 #coin_count {
     font-size: 30px;
     margin-top: -30px;
@@ -105,16 +111,28 @@ canvas {
     z-index: 16;
 }
 #action_window button {
-    color: #B614DF;
-    border: 3px solid;
+    position: relative;
+    color: #FFF;
+    border: 1px solid #6F48AA;
     border-radius: 3px;
     padding: 20px 70px;
     font-size: 16px;
     font-weight: bold;
-    background: rgba(0, 0, 0, 0);
+    background: #8D418A;
     cursor: pointer;
     font-family: Comic Sans MS;
     outline: none;
+    box-shadow: inset 0 1px #B46ECF, 0 1px 2px rgba(0, 0, 0, 0.56);
+    border-bottom: 3px solid #691D81;
+    text-shadow: 0 -01px #44107C;
+}
+#action_window button:hover {
+    background: #B459B1;
+}
+#action_window button:active {
+    border-bottom: 1px solid #691D81;
+    top: 2px;
+    margin-bottom: 4px;
 }
 #action_window .container {
     margin: 15% auto;
@@ -143,6 +161,14 @@ canvas {
     right:0;
     z-index: 15;
     background: transparent;
+}
+
+#wow_text {
+    z-index: 15;
+    font-size: 20px;
+    position: absolute;
+    max-width: 400px;
+    padding: 10px;
 }
 
 

@@ -92,7 +92,7 @@ window.addEventListener("load", function (e) {
             localStorage.setItem('player_highscore', current_score)
         }
         
-        $('#highscore span').text(player.highscore)
+        $('#highscore span').html(numberWithCommas(player.highscore))
          
         $action_window.fadeIn();
         $play_again_btn.focus();
@@ -186,9 +186,8 @@ window.addEventListener("load", function (e) {
 
             if(!Q.state.get('game_over')) {
                 Q.state.inc("score", 100);
-                $score.text(Q.state.get("score"));
+                $score.html(numberWithCommas(Q.state.get("score")));
             }
-
         });
     });
 
@@ -207,7 +206,8 @@ window.addEventListener("load", function (e) {
                 scale: 0.8,
                 gravity: 3,
                 type: SPRITE_PLAYER,
-                collisionMask: SPRITE_ENEMY | PICKUP
+                collisionMask: SPRITE_ENEMY | PICKUP,
+                sort: true
             });
             this.add('2d');
         },
@@ -280,7 +280,8 @@ window.addEventListener("load", function (e) {
             this._super(p, {
                 asset: "smoke.png",
                 type: PARTICLES,
-                z: 8
+                z: 8,
+                sort: true
             });
         }
     });
@@ -307,9 +308,8 @@ window.addEventListener("load", function (e) {
                     Q.state.inc("score", 1000000);
                     Q.state.inc('coins', 1);
 
-                    console.log()
+                    generateSuchText(this.p.x / 2, this.p.y / 2);
 
-                    this.stage.insert(new Q.Wow());
                     this.destroy();
                     flashScreen();
                     $coin_count.find('span').text(Q.state.get("coins"))
@@ -406,58 +406,66 @@ window.addEventListener("load", function (e) {
     
     // WOW
     // ===============================================
-    Q.UI.Text.extend("Wow", {
-        init:function(p) {
-            var wow_choices = [
-                "wow",
-                "To The Moon!",
-                "Much Coin", 
-                "Very Win", 
-                "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
-                "such truasre",
-                "every doge has its day"
-            ]; // Todo - Add way more
-
-            var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
-
-            // Todo - Spawn these in random places, effects?
-            this._super(p, {
-                label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
-                color: wow_color_choices[Math.floor(Math.random() * wow_choices.length)] || 'white',
-                x: Q.width/2,
-                y: 100,
-                counter: 1,
-                type: UI,
-                style: '100px Comic Sans MS'
-            });
-        },
-
-        step: function(p) {
-            this.p.counter += 1;
-
-            if ((this.p.counter % 50) === 0) {
-                this.destroy();
-            }
-        }
-    });
-
-    // function generateSuchText() {
-    //     var wow_choices = [
+    // Q.UI.Text.extend("Wow", {
+    //     init:function(p) {
+    //         var wow_choices = [
     //             "wow",
     //             "To The Moon!",
     //             "Much Coin", 
     //             "Very Win", 
     //             "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
     //             "such truasre",
-    //             "every doge has its day",
-    //             "FUN doge dodgein'"
+    //             "every doge has its day"
     //         ]; // Todo - Add way more
-    //     var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
 
-    //     var such_text = $('<div>'+  + '</div>')
+    //         var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
 
-    //     $('document').append('<div>')
-    // }
+    //         // Todo - Spawn these in random places, effects?
+    //         this._super(p, {
+    //             label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
+    //             color: wow_color_choices[Math.floor(Math.random() * wow_choices.length)] || 'white',
+    //             x: Q.width/2,
+    //             y: 100,
+    //             counter: 1,
+    //             type: UI,
+    //             style: '100px Comic Sans MS'
+    //         });
+    //     },
+
+    //     step: function(p) {
+    //         this.p.counter += 1;
+
+    //         if ((this.p.counter % 50) === 0) {
+    //             this.destroy();
+    //         }
+    //     }
+    // });
+
+    function generateSuchText(x,y) {
+        $('#wow_text').fadeIn(100);
+        var wow_choices = [
+                "wow",
+                "to the moon!",
+                "much coin", 
+                "very win", 
+                "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
+                "such truasre",
+                "every doge has its day",
+                "FUN doge dodgein'",
+                "much asteroid, such scare",
+                "such space coin",
+                "such speed",
+                "amaze",
+            ] // Todo - Add way more
+        ,   wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange']
+        ,   color = wow_color_choices[Math.floor(Math.random() * wow_color_choices.length) - 1]
+        ,   text = wow_choices[Math.floor(Math.random() * wow_choices.length) - 1];
+
+        $('#wow_text').text(text).css({'color': color, left: x, top: y});
+
+        setTimeout(function() { $('#wow_text').fadeOut(500); }, 2000)
+
+    }
 
     // STARS (refactor this bullshit)
     // ===============================================
