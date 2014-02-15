@@ -8,5 +8,7 @@ window.requestAnimFrame = (function(){
 })();
 
 function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "<span>,</span>");
+    if (x) {
+    	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "<span>,</span>");	
+    }
 }

@@ -173,6 +173,14 @@ h2 {
     top: 2px;
     margin-bottom: 4px;
 }
+
+#action_text {
+    display: inline-block;
+    margin-right: 10px;
+}
+#clear_and_reset {
+    font-size: 10px;
+}
 #flash_screen {
     position: absolute;
     top:0;

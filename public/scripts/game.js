@@ -93,11 +93,12 @@ window.addEventListener("load", function (e) {
             localStorage.setItem('player_highscore', current_score)
         }
         
-        $('#highscore span').html(numberWithCommas(player.highscore))
+        $('#highscore span').html(numberWithCommas(player.highscore) || 0)
          
         $action_window.fadeIn();
         $play_again_btn.focus();
         $play_again_btn.on('click', function(event) {
+            event.preventDefault();
             Q.clearStages();
             Q.stageScene('Level1');
             Q.state.set('score', 0);
@@ -545,29 +546,7 @@ window.addEventListener("load", function (e) {
                 muteMusic();
         }
     }
-
-    // MOBILE TOUCH
-    // document.addEventListener('touchstart', function(e) {
-    //     e.preventDefault();
-    //     var touch = e.touches[0];
-    //     // move player
-
-    //     var player = Q('Doge');
-
-    //     player.p.vy = -1000;
-    //     player.stage.insert(new Q.Smoke({
-    //         vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
-    //         vy: Math.round(Math.random() * (300 - -100 ) + -100),
-    //         scale: 3,
-    //         y: this.p.y + 50,
-    //         x: this.p.x - 50,
-    //         gravity: 0,
-    //         opacity: .5
-    //     }))
-    // }, false);
-
-
-
+    
     $mute_music.on('click', function() {
         muteMusic();
     })
@@ -613,6 +592,10 @@ window.addEventListener("load", function (e) {
         }
     }
 
+    function afterLoadIsDone() {
+        playMusic();
+    }
+
 
     // INIT GAME
     // ==============================================
@@ -625,11 +608,17 @@ window.addEventListener("load", function (e) {
         var label = "Welcome ensign! Enter your name"
         if (player.name) {
             label = "Welcome back, " + player.name + "!"
+            $action_text.after('<a id="clear_and_reset" href="#">Not you?</a>');
+            $('#clear_and_reset').on('click', function(event) {
+                event.preventDefault();
+                localStorage.clear();
+                window.location.reload();
+            })
         }
 
         Q.stageScene("startGame",1, { label: label});
         $game_canvas = $("#quintus");
-        playMusic();
+        afterLoadIsDone();
 
     }, {
         progressCallback: function(loaded,total) {
