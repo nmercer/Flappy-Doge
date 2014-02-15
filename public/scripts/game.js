@@ -594,12 +594,14 @@ window.addEventListener("load", function (e) {
     var loading_text = [
         'Reticulating Splines', 
         'Animating Loading Bar', 
-        'Scooping up Space Poop', 
+        'Clearing Space Junk', 
         'Creating the Universe',
         'Loading Doge Coins',
         'Generating Moon',
         'Randomizing Asteroids',
         'Drinking a Space Beer',
+        'Contemplating Spacetime Paradoxes',
+        'Hosing Down Doge Rocket'
     ]
 
     function setLoadingText() {
