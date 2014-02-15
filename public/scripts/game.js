@@ -18,7 +18,9 @@ window.addEventListener("load", function (e) {
     // Game states
     var   launch_asteroids = true
     ,     music_playing = localStorage.getItem('mute_music') || true
-    ,     games_played_this_session = 0;
+    ,     games_played_this_session = 0
+    ,     game_is_loading = true;
+
 
 
     // PLANET DISTANCES
@@ -51,7 +53,6 @@ window.addEventListener("load", function (e) {
         .enableSound();
 
     
-
     // PLAYER
     // ===============================================
 
@@ -409,43 +410,6 @@ window.addEventListener("load", function (e) {
         }
     })
     
-    // WOW
-    // ===============================================
-    // Q.UI.Text.extend("Wow", {
-    //     init:function(p) {
-    //         var wow_choices = [
-    //             "wow",
-    //             "To The Moon!",
-    //             "Much Coin", 
-    //             "Very Win", 
-    //             "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
-    //             "such truasre",
-    //             "every doge has its day"
-    //         ]; // Todo - Add way more
-
-    //         var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
-
-    //         // Todo - Spawn these in random places, effects?
-    //         this._super(p, {
-    //             label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
-    //             color: wow_color_choices[Math.floor(Math.random() * wow_choices.length)] || 'white',
-    //             x: Q.width/2,
-    //             y: 100,
-    //             counter: 1,
-    //             type: UI,
-    //             style: '100px Comic Sans MS'
-    //         });
-    //     },
-
-    //     step: function(p) {
-    //         this.p.counter += 1;
-
-    //         if ((this.p.counter % 50) === 0) {
-    //             this.destroy();
-    //         }
-    //     }
-    // });
-
     function generateSuchText(x,y) {
         $('#wow_text').fadeIn(100);
         var wow_choices = [
@@ -463,8 +427,8 @@ window.addEventListener("load", function (e) {
                 "amaze",
             ] // Todo - Add way more
         ,   wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange']
-        ,   color = wow_color_choices[Math.floor(Math.random() * wow_color_choices.length) - 1]
-        ,   text = wow_choices[Math.floor(Math.random() * wow_choices.length) - 1];
+        ,   color = wow_color_choices[Math.floor(Math.random() * wow_color_choices.length)]
+        ,   text = wow_choices[Math.floor(Math.random() * wow_choices.length)];
 
         $('#wow_text').text(text).css({'color': color, left: x, top: y});
 
@@ -627,11 +591,29 @@ window.addEventListener("load", function (e) {
         });
     }
 
+    var loading_text = [
+        'Reticulating Splines', 
+        'Animating Loading Bar', 
+        'Scooping up Space Poop', 
+        'Creating the Universe',
+    ]
+
+    function setLoadingText() {
+        $('#loading_text').text(loading_text[Math.floor(Math.random() * loading_text.length )])
+        if (game_is_loading) {
+            setTimeout(function() { 
+                setLoadingText();
+            }, 5000);
+        }
+    }
+
 
     // INIT GAME
     // ==============================================
 
     Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1, superman_sent: false});
+
+    setLoadingText()
 
     Q.load("doge2.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
         var label = "Welcome ensign! Enter your name"
@@ -642,12 +624,13 @@ window.addEventListener("load", function (e) {
         Q.stageScene("startGame",1, { label: label});
         $game_canvas = $("#quintus");
         playMusic();
-        
+
     }, {
         progressCallback: function(loaded,total) {
             $("#loading_progress").css('width', Math.floor(loaded/total*100) + "%");
             if (loaded === total) {
                 $("#loading").fadeOut();
+                game_is_loading = false;
             }
         }
     });
