@@ -114,7 +114,7 @@ window.addEventListener("load", function (e) {
             Q.stageScene('Level1');
             Q.state.set('score', 0);
             $action_window.fadeOut();
-            //setTimeout(function(){$game_canvas.focus()}, 10)
+            setTimeout(function(){$game_canvas.focus()}, 10)
             launch_asteroids = true
         });
     });
