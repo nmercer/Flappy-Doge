@@ -1,3 +1,7 @@
+// Todo - Setup some sort of prod BS
+prod = true;
+
+
 
 /**
  * Module dependencies.
@@ -15,9 +19,6 @@ app.set('port', process.env.PORT || 8900);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json()); 
 app.use(express.urlencoded());
-
-// Todo - Setup some sort of prod BS
-prod = true;
 
 // DEV
 // ===============================================
