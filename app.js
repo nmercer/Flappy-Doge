@@ -105,11 +105,11 @@ async.series([
 			         'TIME DATE)', callback);
   	},
   	function insert_default(callback) {
-    	var score = {TIME: new Date(), 
-    			     NAME: 'Nicholas John Mercer',
-        			 SCORE: 1337133713371337};
+    	// var score = {TIME: new Date(), 
+    	// 		     NAME: 'Nicholas John Mercer',
+     //    			 SCORE: 1337133713371337};
 
-    	client.query('INSERT INTO SCOREBOARD set ?', score, callback);
+    	// client.query('INSERT INTO SCOREBOARD set ?', score, callback);
   	}
 ], function (err, results) {
 	if (err) {
