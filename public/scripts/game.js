@@ -1,4 +1,4 @@
-var prod = false;
+var prod = true;
 if(prod) {
     var URL = 'dogeinspace-env-qtuur5rufi.elasticbeanstalk.com'
 } else {
