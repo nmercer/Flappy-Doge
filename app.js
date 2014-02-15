@@ -90,19 +90,19 @@ async.series([
     	client.connect(callback);
   	},
   	function clear(callback) {
-    	// client.query('DROP DATABASE IF EXISTS mynode_db', callback);
+    	client.query('DROP DATABASE IF EXISTS mynode_db', callback);
   	},
   	function create_db(callback) {
-    	// client.query('CREATE DATABASE mynode_db', callback);
+    	client.query('CREATE DATABASE mynode_db', callback);
   	},
   	function use_db(callback) {
     	client.query('USE mynode_db', callback);
   	},
   	function create_table(callback) {
-    	// client.query('CREATE TABLE SCOREBOARD (' +
-     //                 'NAME VARCHAR(40), ' +
-			  //        'SCORE BIGINT, ' +
-			  //        'TIME DATE)', callback);
+    	client.query('CREATE TABLE SCOREBOARD (' +
+                     'NAME VARCHAR(40), ' +
+			         'SCORE BIGINT, ' +
+			         'TIME DATE)', callback);
   	},
   	function insert_default(callback) {
     	// var score = {TIME: new Date(), 
