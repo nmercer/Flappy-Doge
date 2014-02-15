@@ -596,6 +596,10 @@ window.addEventListener("load", function (e) {
         'Animating Loading Bar', 
         'Scooping up Space Poop', 
         'Creating the Universe',
+        'Loading Doge Coins',
+        'Generating Moon',
+        'Randomizing Asteroids',
+        'Drinking a Space Beer',
     ]
 
     function setLoadingText() {
