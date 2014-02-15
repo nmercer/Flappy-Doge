@@ -1,8 +1,8 @@
 var prod = true;
 
-var URL = 'http://localhost:8900/'
+var URL = 'http://localhost:8900/';
 if(prod) {
-    var URL = 'dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/'
+    URL = 'dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/';
 }
 
 window.addEventListener("load", function (e) {
