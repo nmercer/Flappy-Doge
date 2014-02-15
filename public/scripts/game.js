@@ -1,4 +1,4 @@
-var prod = false;
+var prod = true;
 
 var URL = 'http://localhost:8900/'
 if(prod) {
@@ -539,7 +539,7 @@ window.addEventListener("load", function (e) {
     function saveScore(name, score) {    
         $.ajax({
             type: "POST",
-            url: 'http://127.0.0.1:8900/save',
+            url: URL + 'save',
             dataType: 'json',
             data: {'name':name, 'score': score},
             success: function (response) {
