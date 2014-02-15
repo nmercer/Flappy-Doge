@@ -1,4 +1,4 @@
-var prod = true;
+var prod = false;
 
 if(prod) {
     var SAVE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/save'
