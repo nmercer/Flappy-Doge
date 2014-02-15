@@ -286,6 +286,7 @@ window.addEventListener("load", function (e) {
             if(this.p.y - 100 > Q.height) {
                 this.destroy();
                 Q.stageScene("startGame", 1, { label: "Whoops! You fell to your death." });
+                saveScore(player.name, Q.state.get('score'));
                 stopAsteroids();
             }
             if(this.p.y < 0) {
@@ -372,7 +373,7 @@ window.addEventListener("load", function (e) {
                     Q.stageScene("startGame",1, { label: "You were obliterated!" }); 
                     collision.obj.destroy();
                     stopAsteroids();
-                    saveScore(player.name, Q.state.get('score')); // Todo - How do we get name var?
+                    saveScore(player.name, Q.state.get('score'));
                 }
             });
         },
@@ -412,6 +413,7 @@ window.addEventListener("load", function (e) {
                     Q.stageScene("startGame",1, { label: "You Died" }); 
                     collision.obj.destroy();
                     stopAsteroids();
+                    saveScore(player.name, Q.state.get('score'));
                 }
             });
         },
