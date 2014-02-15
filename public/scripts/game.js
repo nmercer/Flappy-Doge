@@ -76,10 +76,10 @@ window.addEventListener("load", function (e) {
 
         $action_text.text(stage.options.label)
 
-        if (player.name && games_played_this_session === 1) {            
-            $action_text.html("Hello " + player.name + '!');
+        if (player.name) {            
+            // $action_text.html("Hello " + player.name + '!');
             $player_name.hide();
-            $player_name.find('input').val(player.name)
+            $player_name.find('input').val(player.name).hide();
         } else {
             $play_again_btn.on('click', function(event) {
                 localStorage.setItem('player_name', $player_name.find('input').val());
@@ -264,7 +264,7 @@ window.addEventListener("load", function (e) {
             }
             if(this.p.y - 100 > Q.height) {
                 this.destroy();
-                Q.stageScene("startGame", 1, { label: "Whoops! Try Again!" });
+                Q.stageScene("startGame", 1, { label: "Whoops! You fell to your death." });
                 stopAsteroids();
             }
             if(this.p.y < 0) {
@@ -348,7 +348,7 @@ window.addEventListener("load", function (e) {
                 if(collision.obj.isA("Doge")) {
                     Q.audio.play('boom1.wav', {loop: false});
                     Q.state.set("game_over", true);
-                    Q.stageScene("startGame",1, { label: "You Died" }); 
+                    Q.stageScene("startGame",1, { label: "You were obliterated!" }); 
                     collision.obj.destroy();
                     stopAsteroids();
                 }
@@ -629,7 +629,12 @@ window.addEventListener("load", function (e) {
     Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1, superman_sent: false});
 
     Q.load("doge2.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
-        Q.stageScene("startGame",1, { label: "Start Game" });
+        var label = "Welcome ensign! Enter your name"
+        if (player.name) {
+            label = "Welcome back, " + player.name + "!"
+        }
+
+        Q.stageScene("startGame",1, { label: label});
         $game_canvas = $("#quintus");
         playMusic();
         
