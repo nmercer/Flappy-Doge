@@ -203,6 +203,7 @@ window.addEventListener("load", function (e) {
                 x: Q.width / 6, 
                 y: 300,
                 z: 10,
+                angle: 0,
                 scale: 0.8,
                 gravity: 3,
                 type: SPRITE_PLAYER,
@@ -238,6 +239,8 @@ window.addEventListener("load", function (e) {
             if(Q.inputs['fire']) { 
                 Q.audio.play('thrust.wav');
 
+                this.p.angle = -10;
+
                 this.p.vy = -1000;
 
                 // Engine 1
@@ -261,6 +264,8 @@ window.addEventListener("load", function (e) {
                     gravity: 0,
                     opacity: .4
                 }))
+            } else {
+                this.p.angle = 0;
             }
             if(this.p.y - 100 > Q.height) {
                 this.destroy();
