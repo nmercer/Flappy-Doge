@@ -1,11 +1,9 @@
-var prod = true;
+var prod = false;
 if(prod) {
     var URL = 'dogeinspace-env-qtuur5rufi.elasticbeanstalk.com'
 } else {
     var URL = 'http://127.0.0.1:8900/'
 }
-
-
 
 window.addEventListener("load", function (e) {
     // Elements
@@ -76,8 +74,6 @@ window.addEventListener("load", function (e) {
         // Set Games Played
         player.games_played += 1
         localStorage.setItem('games_played', player.games_played);
-
-        getScore(); // Todo - Move this
 
         var current_score = Q.state.get('score')
 
@@ -563,7 +559,7 @@ window.addEventListener("load", function (e) {
     function getScore() {
         $.ajax({
             type: "POST",
-            url: 'http://127.0.0.1:8900/scoreboard',
+            url: URL + '/scoreboard',
             success: function (response) {
                 if(response.status === 'success') {
                     console.log(response); // Todo - Orry do something with this
@@ -656,6 +652,7 @@ window.addEventListener("load", function (e) {
         } else {
             $player_name.find('input').focus();
         }
+        getScore();
     }
 
 
