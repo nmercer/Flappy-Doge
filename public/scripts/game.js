@@ -1,8 +1,10 @@
 var prod = true;
 if(prod) {
-    var URL = 'dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/'
+    var SAVE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/save'
+    var SCORE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/scoreboard'
 } else {
-    var URL = 'http://localhost:8900/'
+    var SAVE_URL = 'http://localhost:8900/save'
+    var SCORE_URL = 'http://localhost:8900/scoreboard'
 }
 
 window.addEventListener("load", function (e) {
@@ -539,7 +541,7 @@ window.addEventListener("load", function (e) {
     function saveScore(name, score) {    
         $.ajax({
             type: "POST",
-            url: URL + 'save',
+            url: SAVE_URL,
             dataType: 'json',
             data: {'name':name, 'score': score},
             success: function (response) {
@@ -556,7 +558,7 @@ window.addEventListener("load", function (e) {
     function loadHighscores() {
         $.ajax({
             type: "POST",
-            url: URL + 'scoreboard',
+            url: SCORE_URL,
             success: function (response) {
                 if(response.status === 'success') {
                     console.log(response);
