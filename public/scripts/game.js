@@ -1,6 +1,32 @@
 
 window.addEventListener("load", function (e) {
 
+    $.ajax({
+        type: "POST",
+        url: 'http://127.0.0.1:8900/save',
+        dataType: 'json',
+        data: {'name':'Nick', 'score': 12345678},
+        success: function (response) {
+            if(response.status === 'success') {
+            }
+            else {
+                // Todo - Some sort of error
+            }
+        }
+    });
+
+    $.ajax({
+        type: "POST",
+        url: 'http://127.0.0.1:8900/scoreboard',
+        success: function (response) {
+            if(response.status === 'success') {
+                console.log(response); // Todo - Orry do something with this
+            }
+            else {
+                // Todo - Some sort of error
+            }
+        }
+    });
 
     // Elements
     var $score = $("#score")
