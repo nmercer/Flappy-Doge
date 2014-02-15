@@ -44,7 +44,9 @@ window.addEventListener("load", function (e) {
     // Game states
     var   launch_asteroids = true
     ,     music_playing = localStorage.getItem('mute_music') || true
-    ,     games_played_this_session = 0;
+    ,     games_played_this_session = 0
+    ,     game_is_loading = true;
+
 
 
     // PLANET DISTANCES
@@ -77,7 +79,6 @@ window.addEventListener("load", function (e) {
         .enableSound();
 
     
-
     // PLAYER
     // ===============================================
 
@@ -102,10 +103,10 @@ window.addEventListener("load", function (e) {
 
         $action_text.text(stage.options.label)
 
-        if (player.name && games_played_this_session === 1) {            
-            $action_text.html("Hello " + player.name + '!');
+        if (player.name) {            
+            // $action_text.html("Hello " + player.name + '!');
             $player_name.hide();
-            $player_name.find('input').val(player.name)
+            $player_name.find('input').val(player.name).hide();
         } else {
             $play_again_btn.on('click', function(event) {
                 localStorage.setItem('player_name', $player_name.find('input').val());
@@ -118,7 +119,7 @@ window.addEventListener("load", function (e) {
             localStorage.setItem('player_highscore', current_score)
         }
         
-        $('#highscore span').text(player.highscore)
+        $('#highscore span').html(numberWithCommas(player.highscore))
          
         $action_window.fadeIn();
         $play_again_btn.focus();
@@ -212,9 +213,8 @@ window.addEventListener("load", function (e) {
 
             if(!Q.state.get('game_over')) {
                 Q.state.inc("score", 100);
-                $score.text(Q.state.get("score"));
+                $score.html(numberWithCommas(Q.state.get("score")));
             }
-
         });
     });
 
@@ -230,10 +230,12 @@ window.addEventListener("load", function (e) {
                 x: Q.width / 6, 
                 y: 300,
                 z: 10,
+                angle: 0,
                 scale: 0.8,
                 gravity: 3,
                 type: SPRITE_PLAYER,
-                collisionMask: SPRITE_ENEMY | PICKUP
+                collisionMask: SPRITE_ENEMY | PICKUP,
+                sort: true
             });
             this.add('2d');
         },
@@ -264,6 +266,8 @@ window.addEventListener("load", function (e) {
             if(Q.inputs['fire']) { 
                 Q.audio.play('thrust.wav');
 
+                this.p.angle = -10;
+
                 this.p.vy = -1000;
 
                 // Engine 1
@@ -281,16 +285,18 @@ window.addEventListener("load", function (e) {
                 this.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
-                    scale: 2.8,
+                    scale: 2.9,
                     y: this.p.y + 45,
                     x: this.p.x - 15,
                     gravity: 0,
-                    opacity: .3
+                    opacity: .4
                 }))
+            } else {
+                this.p.angle = 0;
             }
             if(this.p.y - 100 > Q.height) {
                 this.destroy();
-                Q.stageScene("startGame", 1, { label: "Whoops! Try Again!" });
+                Q.stageScene("startGame", 1, { label: "Whoops! You fell to your death." });
                 stopAsteroids();
             }
             if(this.p.y < 0) {
@@ -306,7 +312,8 @@ window.addEventListener("load", function (e) {
             this._super(p, {
                 asset: "smoke.png",
                 type: PARTICLES,
-                z: 8
+                z: 8,
+                sort: true
             });
         }
     });
@@ -333,9 +340,8 @@ window.addEventListener("load", function (e) {
                     Q.state.inc("score", 1000000);
                     Q.state.inc('coins', 1);
 
-                    console.log()
+                    generateSuchText(this.p.x / 2, this.p.y / 2);
 
-                    this.stage.insert(new Q.Wow());
                     this.destroy();
                     flashScreen();
                     $coin_count.find('span').text(Q.state.get("coins"))
@@ -374,7 +380,7 @@ window.addEventListener("load", function (e) {
                 if(collision.obj.isA("Doge")) {
                     Q.audio.play('boom1.wav', {loop: false});
                     Q.state.set("game_over", true);
-                    Q.stageScene("startGame",1, { label: "You Died" }); 
+                    Q.stageScene("startGame",1, { label: "You were obliterated!" }); 
                     collision.obj.destroy();
                     stopAsteroids();
                 }
@@ -430,60 +436,31 @@ window.addEventListener("load", function (e) {
         }
     })
     
-    // WOW
-    // ===============================================
-    Q.UI.Text.extend("Wow", {
-        init:function(p) {
-            var wow_choices = [
+    function generateSuchText(x,y) {
+        $('#wow_text').fadeIn(100);
+        var wow_choices = [
                 "wow",
-                "To The Moon!",
-                "Much Coin", 
-                "Very Win", 
+                "to the moon!",
+                "much coin", 
+                "very win", 
                 "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
                 "such truasre",
-                "every doge has its day"
-            ]; // Todo - Add way more
+                "every doge has its day",
+                "FUN doge dodgein'",
+                "much asteroid, such scare",
+                "such space coin",
+                "such speed",
+                "amaze",
+            ] // Todo - Add way more
+        ,   wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange']
+        ,   color = wow_color_choices[Math.floor(Math.random() * wow_color_choices.length)]
+        ,   text = wow_choices[Math.floor(Math.random() * wow_choices.length)];
 
-            var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
+        $('#wow_text').text(text).css({'color': color, left: x, top: y});
 
-            // Todo - Spawn these in random places, effects?
-            this._super(p, {
-                label: wow_choices[Math.floor(Math.random() * wow_choices.length)],
-                color: wow_color_choices[Math.floor(Math.random() * wow_choices.length)] || 'white',
-                x: Q.width/2,
-                y: 100,
-                counter: 1,
-                type: UI,
-                style: '100px Comic Sans MS'
-            });
-        },
+        setTimeout(function() { $('#wow_text').fadeOut(500); }, 2000)
 
-        step: function(p) {
-            this.p.counter += 1;
-
-            if ((this.p.counter % 50) === 0) {
-                this.destroy();
-            }
-        }
-    });
-
-    // function generateSuchText() {
-    //     var wow_choices = [
-    //             "wow",
-    //             "To The Moon!",
-    //             "Much Coin", 
-    //             "Very Win", 
-    //             "DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE DOGE",
-    //             "such truasre",
-    //             "every doge has its day",
-    //             "FUN doge dodgein'"
-    //         ]; // Todo - Add way more
-    //     var wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange'];
-
-    //     var such_text = $('<div>'+  + '</div>')
-
-    //     $('document').append('<div>')
-    // }
+    }
 
     // STARS (refactor this bullshit)
     // ===============================================
@@ -640,22 +617,52 @@ window.addEventListener("load", function (e) {
         });
     }
 
+    var loading_text = [
+        'Reticulating Splines', 
+        'Animating Loading Bar', 
+        'Clearing Space Junk', 
+        'Creating the Universe',
+        'Loading Doge Coins',
+        'Generating Moon',
+        'Randomizing Asteroids',
+        'Drinking a Space Beer',
+        'Contemplating Spacetime Paradoxes',
+        'Hosing Down Doge Rocket'
+    ]
+
+    function setLoadingText() {
+        $('#loading_text').text(loading_text[Math.floor(Math.random() * loading_text.length )])
+        if (game_is_loading) {
+            setTimeout(function() { 
+                setLoadingText();
+            }, 5000);
+        }
+    }
+
 
     // INIT GAME
     // ==============================================
 
     Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1, superman_sent: false});
 
+    setLoadingText()
+
     Q.load("doge2.png, asteroid.png, boner.wav, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
-        Q.stageScene("startGame",1, { label: "Start Game" });
+        var label = "Welcome ensign! Enter your name"
+        if (player.name) {
+            label = "Welcome back, " + player.name + "!"
+        }
+
+        Q.stageScene("startGame",1, { label: label});
         $game_canvas = $("#quintus");
         playMusic();
-        
+
     }, {
         progressCallback: function(loaded,total) {
             $("#loading_progress").css('width', Math.floor(loaded/total*100) + "%");
             if (loaded === total) {
                 $("#loading").fadeOut();
+                game_is_loading = false;
             }
         }
     });
