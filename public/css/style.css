@@ -121,14 +121,14 @@ h2 {
 }
 #action_window {
     position: absolute;
-    width:100%;
-    height:100%;
+    width:50%;
+    height:50%;
     display: none;
     z-index: 16;
+    margin: auto;
+    top:0; bottom:0; left:0; right:0;
 }
 #action_window .container {
-    margin: 15% auto;
-    width: 600px;
     background: #FFF;
     border-radius: 3px;
     padding: 15px;
