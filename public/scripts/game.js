@@ -69,11 +69,6 @@ window.addEventListener("load", function (e) {
     // ===============================================
     Q.scene('startGame',function(stage) {
         // Set Games Played
-        if(games_played_this_session === 0 ) {
-            $('#clear_and_reset').show()
-        } else {
-            $('#clear_and_reset').hide()
-        }
         player.games_played += 1
         localStorage.setItem('games_played', player.games_played);
 
@@ -81,19 +76,24 @@ window.addEventListener("load", function (e) {
 
         $action_text.text(stage.options.label)
 
+        // RETURNING PLAYER 
         if (player.name) {            
             $player_name.hide();
             $player_name.find('input').val(player.name).hide();
-            $play_again_btn.focus();
-            
+
+            if(games_played_this_session === 0 ) {
+                $('#clear_and_reset').show()
+            } else {
+                $('#clear_and_reset').hide()
+            }
+
+        // FIRST TIME PLAYER
         } else {
-            console.log($player_name.find('input'))
-            $('#clear_and_reset').hide();            
+            // Save player's name
             $play_again_btn.on('click', function(event) {
                 localStorage.setItem('player_name', $player_name.find('input').val());
                 player.name = $player_name.find('input').val();
             });
-            $player_name.find('input').focus()
         }
 
         if (current_score > player.highscore) {
@@ -104,6 +104,9 @@ window.addEventListener("load", function (e) {
         $('#highscore span').html(numberWithCommas(player.highscore) || 0)
          
         $action_window.fadeIn();
+
+        $play_again_btn.focus();
+        
         $play_again_btn.on('click', function(event) {
             event.preventDefault();
             games_played_this_session += 1;
@@ -111,7 +114,7 @@ window.addEventListener("load", function (e) {
             Q.stageScene('Level1');
             Q.state.set('score', 0);
             $action_window.fadeOut();
-            setTimeout(function(){$game_canvas.focus()}, 10)
+            //setTimeout(function(){$game_canvas.focus()}, 10)
             launch_asteroids = true
         });
     });
@@ -608,6 +611,11 @@ window.addEventListener("load", function (e) {
 
     function afterLoadIsDone() {
         playMusic();
+        if (player.name) {
+            $play_again_btn.focus();
+        } else {
+            $player_name.find('input').focus();
+        }
     }
 
 
