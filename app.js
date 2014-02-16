@@ -1,8 +1,6 @@
 // Todo - Setup some sort of prod BS
 prod = true;
 
-
-
 /**
  * Module dependencies.
  */
@@ -16,6 +14,7 @@ var express = require('express')
 
 // all environments
 app.set('port', process.env.PORT || 8900);
+app.use(express.compress());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json()); 
 app.use(express.urlencoded());
@@ -72,6 +71,8 @@ app.post('/save', function(req, res) {
 
 });
 
+// DOGEBOARD
+// ===============================================
 app.post('/scoreboard', function(req, res) {
 	console.log('Scoreboard Called');
 
@@ -89,27 +90,8 @@ async.series([
  	function connect(callback) {
     	client.connect(callback);
   	},
-  	function clear(callback) {
-    	client.query('DROP DATABASE IF EXISTS mynode_db', callback);
-  	},
-  	function create_db(callback) {
-    	client.query('CREATE DATABASE mynode_db', callback);
-  	},
   	function use_db(callback) {
     	client.query('USE mynode_db', callback);
-  	},
-  	function create_table(callback) {
-    	client.query('CREATE TABLE SCOREBOARD (' +
-                     'NAME VARCHAR(40), ' +
-			         'SCORE BIGINT, ' +
-			         'TIME DATE)', callback);
-  	},
-  	function insert_default(callback) {
-    	var score = {TIME: new Date(), 
-    			     NAME: 'Nicholas John Mercer',
-        			 SCORE: 1337133713371337};
-
-    	client.query('INSERT INTO SCOREBOARD set ?', score, callback);
   	}
 ], function (err, results) {
 	if (err) {
@@ -119,3 +101,42 @@ async.series([
 		console.log('Database initialization complete.');
 	}
 });
+
+// function reset_db() {
+// 	if(!prod) {
+// 		async.series([
+// 		 	function connect(callback) {
+// 		    	client.connect(callback);
+// 		  	},
+// 		  	function clear(callback) {
+// 		    	client.query('DROP DATABASE IF EXISTS mynode_db', callback);
+// 		  	},
+// 		  	function create_db(callback) {
+// 		    	client.query('CREATE DATABASE mynode_db', callback);
+// 		  	},
+// 		  	function use_db(callback) {
+// 		    	client.query('USE mynode_db', callback);
+// 		  	}
+// 		  	function create_table(callback) {
+// 		    	client.query('CREATE TABLE SCOREBOARD (' +
+// 		                     'NAME VARCHAR(40), ' +
+// 					         'SCORE BIGINT, ' +
+// 					         'TIME DATE)', callback);
+// 		  	},
+// 		  	function insert_default(callback) {
+// 		    	var score = {TIME: new Date(), 
+// 		    			     NAME: 'Nicholas John Mercer',
+// 		        			 SCORE: 1337133713371337};
+
+// 		    	client.query('INSERT INTO SCOREBOARD set ?', score, callback);
+// 		  	}
+// 		], function (err, results) {
+// 			if (err) {
+// 				console.log('Exception initializing database.');
+// 				throw err;
+// 			} else {
+// 				console.log('Database initialization complete. Reset.');
+// 			}
+// 		});
+// 	}
+// }
