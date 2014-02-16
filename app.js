@@ -85,7 +85,8 @@ app.post('/scoreboard', function(req, res) {
   	});
 });
 
-// var client = app.get('connection');
+// Connect to dogebase
+var client = app.get('connection');
 // async.series([
 //  	function connect(callback) {
 //     	client.connect(callback);
@@ -102,41 +103,39 @@ app.post('/scoreboard', function(req, res) {
 // 	}
 // });
 
-reset_db();
-function reset_db() {
-	async.series([
-	 	function connect(callback) {
-	    	client.connect(callback);
-	  	},
-	  	function clear(callback) {
-	    	client.query('DROP DATABASE IF EXISTS mynode_db', callback);
-	  	},
-	  	function create_db(callback) {
-	    	client.query('CREATE DATABASE mynode_db', callback);
-	  	},
-	  	function use_db(callback) {
-	    	client.query('USE mynode_db', callback);
-	  	}
-	  	function create_table(callback) {
-	    	client.query('CREATE TABLE SCOREBOARD (' +
-	                     'NAME VARCHAR(40), ' +
-				         'SCORE BIGINT, ' +
-				         'TIME DATE)', callback);
-	  	},
-	  	function insert_default(callback) {
-	    	var score = {TIME: new Date(), 
-	    			     NAME: 'Nicholas John Mercer',
-	        			 SCORE: 1337};
+// Resets the dogebase
+async.series([
+ 	function connect(callback) {
+    	client.connect(callback);
+  	},
+  	function clear(callback) {
+    	client.query('DROP DATABASE IF EXISTS mynode_db', callback);
+  	},
+  	function create_db(callback) {
+    	client.query('CREATE DATABASE mynode_db', callback);
+  	},
+  	function use_db(callback) {
+    	client.query('USE mynode_db', callback);
+  	},
+  	function create_table(callback) {
+    	client.query('CREATE TABLE SCOREBOARD (' +
+                     'NAME VARCHAR(40), ' +
+			         'SCORE BIGINT, ' +
+			         'TIME DATE)', callback);
+  	},
+  	function insert_default(callback) {
+    	var score = {TIME: new Date(), 
+    			     NAME: 'Nicholas John Mercer',
+        			 SCORE: 1337};
 
-	    	client.query('INSERT INTO SCOREBOARD set ?', score, callback);
-	  	}
-	], function (err, results) {
-		if (err) {
-			console.log('Exception initializing database.');
-			throw err;
-		} else {
-			console.log('Database initialization complete. Reset.');
-		}
-	});
+    	client.query('INSERT INTO SCOREBOARD set ?', score, callback);
+  	}
+], function (err, results) {
+	if (err) {
+		console.log('Exception initializing database.');
+		throw err;
+	} else {
+		console.log('Database initialization complete. Reset.');
+	}
+});
 
-}
