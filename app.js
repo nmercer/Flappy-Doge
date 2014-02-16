@@ -1,5 +1,5 @@
 // Todo - Setup some sort of prod BS
-prod = false;
+prod = true;
 
 /// SETUP
 // ===============================================
