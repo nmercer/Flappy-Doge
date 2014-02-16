@@ -1,18 +1,15 @@
 // Todo - Setup some sort of prod BS
-prod = true;
+prod = false;
 
-/**
- * Module dependencies.
- */
+/// SETUP
+// ===============================================
 var express = require('express')
   , http = require('http')
   , path = require('path')
   , mysql = require('mysql')
   , async = require('async')
-  , uuid = require('node-uuid') // Todo - Wut?
   , app = express();
 
-// all environments
 app.set('port', process.env.PORT || 8900);
 app.use(express.compress());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -97,14 +94,15 @@ async.series([
   	}
 ], function (err, results) {
 	if (err) {
-		console.log('Exception initializing database.');
+		console.log('Exception initializing dogebase.');
 		throw err;
 	} else {
-		console.log('Database initialization complete.');
+		console.log('Dogebase Connected.');
 	}
 });
 
-// Resets the dogebase
+// RESET DOGEBASE
+// ===============================================
 // async.series([
 //  	function connect(callback) {
 //     	client.connect(callback);

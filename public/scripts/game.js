@@ -1,4 +1,4 @@
-var prod = true;
+var prod = false;
 
 if(prod) {
     var SAVE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/save'
@@ -49,7 +49,7 @@ window.addEventListener("load", function (e) {
     var SUPERMAN_RANDOMIZER = 400;
 
     // Initialize Quintus
-    var Q = window.Q = Quintus({ audioSupported: ['wav']})
+    var Q = window.Q = Quintus({ audioSupported: ['mp3', 'wav']})
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
         .setup({
             maximize: true
