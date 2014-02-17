@@ -1,4 +1,4 @@
-var prod = true;
+var prod = false;
 
 if(prod) {
     var SAVE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/save'
@@ -20,7 +20,6 @@ window.addEventListener("load", function (e) {
     ,   $coin_count = $('#coin_count')
     ,   $title = $('#title')
     ,   $game_canvas
-
 
     // Game states
     var   launch_asteroids = true

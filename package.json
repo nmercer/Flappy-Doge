@@ -9,6 +9,9 @@
     "express": "3.4.8",
     "mysql": "*",
     "async": "*",
-    "node-uuid": "*"
+    "node-uuid": "*",
+    "cookie-sessions": "*",
+    "node-uuid": "*",
+    "connect-redis": "1.4.x"
   }
 }
