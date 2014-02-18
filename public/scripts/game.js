@@ -25,11 +25,12 @@ window.addEventListener("load", function (e) {
     var   launch_asteroids = true
     ,     music_playing = localStorage.getItem('mute_music') || true
     ,     games_played_this_session = 0
-    ,     game_is_loading = true;
+    ,     game_is_loading = true
+    ,     moon_reached = true;
 
 
     // PLANET DISTANCES
-    var MOON = 250000000         // level 1
+    var MOON = 10000000         // level 1
     ,   MARS = 35000000        // level 2
     ,   JUPITER = 370000000    // level 3
     ,   SATURN = 744000000     // level 4
@@ -144,6 +145,8 @@ window.addEventListener("load", function (e) {
         Q.state.set('coins', parseInt(localStorage.getItem('coins')) || 0);
         Q.state.set("superman_sent", false);
         Q.state.set('player_alive', true);
+
+        $('#moon').removeClass('enter');
 
         initTouch();
         
@@ -570,8 +573,11 @@ window.addEventListener("load", function (e) {
 
     function updateProgress(score) {
         $progress_bar.css('width', score / MOON * 100 + '%' );
-        if (score === MOON) {
-            
+        if (score >= (MOON - 2000000)) {
+            moon_reached = true;
+            if (!$('moon').hasClass('enter')) {
+                $('#moon').addClass('enter');
+            }
         } 
     }
 

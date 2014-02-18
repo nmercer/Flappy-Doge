@@ -283,15 +283,11 @@ h2 {
 }
 
 #earth {
-    /*background-image: url('/images/earth-bkg.png');*/
     height: 100%;
     max-height:1000px;
     bottom: 0;
-    /*width:500px;*/
     position: absolute;
     left:0;
-    /*background-position: right;
-    background-repeat: no-repeat;*/
     z-index: 1;
 
     -webkit-transition:all 50s linear;
@@ -300,14 +296,34 @@ h2 {
     transition:all 50s linear;
 }
 #earth.peace {
-    /*left:-500px;*/
     -webkit-transform: translate3d(-500px,0,0);
     -moz-transform: translate3d(-500px,0,0);
     -o-transform: translate3d(-500px,0,0);
     transform: translate3d(-500px,0,0);
-
-
 }
+#moon {
+    height: 100%;
+    max-height:1000px;
+    bottom: 0;
+    position: absolute;
+    right:-500px;
+    z-index: 1;
+
+    
+}
+#moon.enter {
+    -webkit-transition:all 50s linear;
+    -moz-transition:all 50s linear;
+    -o-transition:all 50s linear;
+    transition:all 50s linear;
+
+
+    -webkit-transform: translate3d(-500px,0,0);
+    -moz-transform: translate3d(-500px,0,0);
+    -o-transform: translate3d(-500px,0,0);
+    transform: translate3d(-500px,0,0);
+}
+
 
 #quintus_container {
     z-index: 2;
