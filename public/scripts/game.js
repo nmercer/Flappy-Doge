@@ -160,6 +160,7 @@ window.addEventListener("load", function (e) {
                 Q.unpauseGame();
                 setTimeout(function(){$game_canvas.focus()}, 10)
                 $('#help-text').fadeOut(); 
+                blastOff();
             }) 
         }, 5)
 
@@ -487,28 +488,30 @@ window.addEventListener("load", function (e) {
     // STARS (refactor this bullshit)
     // ===============================================
     var c = document.getElementById("star_field");
-    var ctx=c.getContext("2d");
+    var ctx = c.getContext("2d");
     var sx = new Array(100);
     var sy = new Array(100);
     var ss = new Array(100);
+    var ssize = new Array(100);
     
     for(i = 0; i < sx.length; i++ ){
         sx[i] = Math.round(Math.random() * c.width);
         sy[i] = Math.round(Math.random() * c.height);
-        ss[i] = Math.round(Math.random() * 1 + 3 );
+        ss[i] = Math.floor(Math.random() * (10 - 2 ) + 2) / 5;
+        ssize[i] = Math.floor(Math.random() * (4 - 1 ) + 1) / 4;
     }
     
     function doGameLoop() {
-        ctx.fillStyle="black";
-        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.fillStyle="transparent";
         
         // Draw the stars.
         ctx.fillStyle = "white";
-        for( i=0; i< sx.length; i++) {
-            ctx.fillRect(sx[i], sy[i], .5, .5);
+        for( i = 0; i < sx.length; i++) {
+            ctx.fillRect(sx[i], sy[i], ssize[i], ssize[i]);
         }
         
-        // Update the stars position.
+        //Update the stars position.
         for(i = 0; i < sx.length; i++) {
             sx[i] -= ss[i];
             if( sx[i] < 0 ) sx[i] = c.width;
@@ -519,6 +522,13 @@ window.addEventListener("load", function (e) {
         requestAnimFrame(animloop);
         doGameLoop();
     })();
+
+    function blastOff() {
+        $('#earth').animate({'left': '-500px'}, 30000,'linear');
+        $('#space_bkg').addClass('deepspace')
+    }
+    
+
 
     function clearSmoke() {
         var smoke = Q('Smoke')
@@ -692,6 +702,8 @@ window.addEventListener("load", function (e) {
         }
         loadHighscores();
     }
+
+
 
 
     // INIT GAME

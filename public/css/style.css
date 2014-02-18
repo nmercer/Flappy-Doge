@@ -44,6 +44,22 @@ canvas {
     width: 100%!important;
     height: 100%!important;
     position: absolute;
+    z-index: 3;
+    
+}
+#space_bkg {
+    width: 100%!important;
+    height: 100%!important;
+    position: absolute;
+    background-color: #021B46;
+    -webkit-transition:background 60s;
+    -moz-transition:background 60s;
+    -o-transition:background 60s;
+    transition:background 60s;
+}
+
+#space_bkg.deepspace {
+    background-color: black;
 }
 #stats {
     position: absolute;
@@ -263,6 +279,21 @@ h2 {
 
 #scoreboard ul {
     list-style: none;
+}
+
+#earth {
+    background-image: url('/images/earth-bkg.png');
+    height: 100%;
+    width:500px;
+    position: absolute;
+    left:0;
+    background-position: right;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+#quintus_container {
+    z-index: 2;
 }
 
 
