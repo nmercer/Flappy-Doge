@@ -297,7 +297,11 @@ h2 {
     transition:all 30s;
 }
 #earth.peace {
-    left:-500px;
+    /*left:-500px;*/
+    -webkit-transform: translate3d(-500px,100px,0) rotateZ(-2deg);
+    -moz-transform: translate3d(-500px,100px,0);
+    -o-transform: translate3d(-500px,100px,0);
+    transform: translate3d(-500px,100px,0);
 }
 
 #quintus_container {
