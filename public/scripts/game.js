@@ -1,5 +1,5 @@
 // var prod = true;
-var prod = false;
+var prod = true;
 
 if(prod) {
     var SAVE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/save'
