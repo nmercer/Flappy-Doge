@@ -258,6 +258,16 @@ h2 {
     -moz-animation: pressButton 1s infinite;
     animation: pressButton 1s infinite;
 }
+
+#scoreboard ul {
+    list-style: none;
+}
+
+
+
+
+
+
 @-webkit-keyframes pressButton {
     0% {border-bottom: 10px solid purple; }
     50% {border-bottom: 3px solid;  margin-top:10px;}

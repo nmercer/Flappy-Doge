@@ -1,4 +1,3 @@
-// var prod = true;
 var prod = true;
 
 if(prod) {
