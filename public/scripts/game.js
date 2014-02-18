@@ -30,7 +30,7 @@ window.addEventListener("load", function (e) {
 
 
     // PLANET DISTANCES
-    var MOON = 10000000         // level 1
+    var MOON = 100000000         // level 1
     ,   MARS = 35000000        // level 2
     ,   JUPITER = 370000000    // level 3
     ,   SATURN = 744000000     // level 4
@@ -609,7 +609,7 @@ window.addEventListener("load", function (e) {
                     $('#scoreboard ul').html('')
                     for (var i = 0; i < response.scores.length; i++) {
                         var score = response.scores[i];
-                        $('#scoreboard ul').append('<li><strong>' + score.NAME + '</strong> -- <span>' + score.SCORE + '</span></li>')
+                        $('#scoreboard ul').append('<li><strong>' + score.NAME + '</strong> -- <span>' + numberWithCommas(score.SCORE) + '</span></li>')
                     };
                 }
                 else {

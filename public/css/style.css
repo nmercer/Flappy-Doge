@@ -307,7 +307,7 @@ h2 {
     max-height:1000px;
     bottom: 0;
     position: absolute;
-    right:-500px;
+    right:-1500px;
     z-index: 1;
 
     
@@ -319,10 +319,10 @@ h2 {
     transition:all 50s linear;
 
 
-    -webkit-transform: translate3d(-500px,0,0);
-    -moz-transform: translate3d(-500px,0,0);
-    -o-transform: translate3d(-500px,0,0);
-    transform: translate3d(-500px,0,0);
+    -webkit-transform: translate3d(-1500px,0,0);
+    -moz-transform: translate3d(-1500px,0,0);
+    -o-transform: translate3d(-1500px,0,0);
+    transform: translate3d(-1500px,0,0);
 }
 
 
