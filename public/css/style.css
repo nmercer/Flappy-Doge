@@ -223,9 +223,10 @@ h2 {
 
 #wow_text {
     z-index: 15;
-    font-size: 20px;
+    font-size: 36px;
+    font-weight: bold;
     position: absolute;
-    max-width: 400px;
+    max-width: 50%;
     padding: 10px;
     text-shadow: 0 1px 20px;
 }
@@ -291,14 +292,14 @@ h2 {
     background-repeat: no-repeat;
     z-index: 1;
 
-    -webkit-transition:all 30s;
-    -moz-transition:all 30s;
-    -o-transition:all 30s;
-    transition:all 30s;
+    -webkit-transition:all 100s;
+    -moz-transition:all 100s;
+    -o-transition:all 100s;
+    transition:all 100s;
 }
 #earth.peace {
     /*left:-500px;*/
-    -webkit-transform: translate3d(-500px,100px,0) rotateZ(-2deg);
+    -webkit-transform: translate3d(-500px,100px,0);
     -moz-transform: translate3d(-500px,100px,0);
     -o-transform: translate3d(-500px,100px,0);
     transform: translate3d(-500px,100px,0);
