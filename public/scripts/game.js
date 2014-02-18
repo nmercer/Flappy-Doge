@@ -105,11 +105,12 @@ window.addEventListener("load", function (e) {
             localStorage.setItem('player_highscore', current_score)
         }
         
+        // Set Highscore UI
         $('#highscore span').html(numberWithCommas(player.highscore) || 0)
          
         $action_window.fadeIn();
 
-        $play_again_btn.focus();
+        setTimeout(function() {$play_again_btn.focus()}, 500);
         
         $play_again_btn.on('click', function(event) {
             event.preventDefault();
@@ -118,10 +119,10 @@ window.addEventListener("load", function (e) {
             Q.stageScene('Level1');
             Q.state.set('score', 0);
             $action_window.fadeOut();
-            setTimeout(function(){$game_canvas.focus()}, 10)
             launch_asteroids = true
         });
     });
+
 
 
     // MAIN GAME
@@ -139,6 +140,7 @@ window.addEventListener("load", function (e) {
         var lowest_level = 30;           // Fastest speed you can make it, smaller faster.
         var level_drop = 10;             // How much faster to make it every time
 
+
         Q.state.set('game_over', false);
         Q.state.set('coins', 0);
         Q.state.set("superman_sent", false);
@@ -150,7 +152,17 @@ window.addEventListener("load", function (e) {
 
         $score.text("0");
 
-
+        // PREGAME Floating Spacebar 
+        setTimeout(function() { 
+            Q.pauseGame(); 
+            $('#help-text').fadeIn();
+            console.log('pause!');
+            $('#got-it').focus().on('click', function() {
+                Q.unpauseGame();
+                setTimeout(function(){$game_canvas.focus()}, 10)
+                $('#help-text').fadeOut(); 
+            }) 
+        }, 5)
 
         stage.on("step",function() {
             counter += 1;
@@ -297,9 +309,11 @@ window.addEventListener("load", function (e) {
             if(this.p.y - 100 > Q.height) {
                 Q.state.set('player_alive', false);
                 this.destroy();
+                Q.audio.play('boom1.wav', {loop: false});
                 Q.stageScene("startGame", 1, { label: "Whoops! You fell to your death." });
                 saveScore(player.name, Q.state.get('score'));
                 stopAsteroids();
+
             }
 
             // Set Game ceiling
@@ -481,7 +495,7 @@ window.addEventListener("load", function (e) {
     for(i = 0; i < sx.length; i++ ){
         sx[i] = Math.round(Math.random() * c.width);
         sy[i] = Math.round(Math.random() * c.height);
-        ss[i] = Math.round(Math.random() * 1 + 2 );
+        ss[i] = Math.round(Math.random() * 1 + 3 );
     }
     
     function doGameLoop() {
