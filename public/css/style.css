@@ -290,6 +290,14 @@ h2 {
     background-position: right;
     background-repeat: no-repeat;
     z-index: 1;
+
+    -webkit-transition:all 30s;
+    -moz-transition:all 30s;
+    -o-transition:all 30s;
+    transition:all 30s;
+}
+#earth.peace {
+    left:-500px;
 }
 
 #quintus_container {

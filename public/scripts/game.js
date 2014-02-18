@@ -524,7 +524,7 @@ window.addEventListener("load", function (e) {
     })();
 
     function blastOff() {
-        $('#earth').animate({'left': '-500px'}, 30000,'linear');
+        $('#earth').addClass('peace');
         $('#space_bkg').addClass('deepspace')
     }
     
