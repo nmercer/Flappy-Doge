@@ -52,13 +52,14 @@ canvas {
     height: 100%!important;
     position: absolute;
     background-color: #021B46;
+    
+}
+
+#space_bkg.deepspace {
     -webkit-transition:background 60s;
     -moz-transition:background 60s;
     -o-transition:background 60s;
     transition:background 60s;
-}
-
-#space_bkg.deepspace {
     background-color: black;
 }
 #stats {
@@ -289,13 +290,13 @@ h2 {
     position: absolute;
     left:0;
     z-index: 1;
-
+}
+#earth.peace {
     -webkit-transition:all 50s linear;
     -moz-transition:all 50s linear;
     -o-transition:all 50s linear;
     transition:all 50s linear;
-}
-#earth.peace {
+
     -webkit-transform: translate3d(-500px,0,0);
     -moz-transform: translate3d(-500px,0,0);
     -o-transform: translate3d(-500px,0,0);

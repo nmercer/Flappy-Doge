@@ -147,6 +147,8 @@ window.addEventListener("load", function (e) {
         Q.state.set('player_alive', true);
 
         $('#moon').removeClass('enter');
+        $('#earth').removeClass('peace');
+        $('#space_bkg').removeClass('deepspace');
 
         initTouch();
         
