@@ -515,21 +515,15 @@ window.addEventListener("load", function (e) {
 
     function muteMusic() {
         if (music_playing) {
-            Q.audio.stop();
+            document.getElementById("boner").pause();
             music_playing = false;
             $mute_music.text('unmute')
             localStorage.setItem('mute_music', true);
         } else {
-            Q.audio.play('boner.mp3', {loop: true});
+            document.getElementById("boner").play();
             music_playing = true;
             $mute_music.text('mute')
             localStorage.setItem('mute_music', false);
-        }
-    }
-
-    function playMusic() {
-        if(music_playing === 'true') {
-            Q.audio.play('boner.mp3', {loop: true});
         }
     }
 
@@ -659,7 +653,6 @@ window.addEventListener("load", function (e) {
     }
 
     function afterLoadIsDone() {
-        playMusic();
         if (player.name) {
             $play_again_btn.focus();
         } else {
@@ -676,7 +669,7 @@ window.addEventListener("load", function (e) {
 
     setLoadingText()
 
-    Q.load("doge2.png, asteroid.png, boner.mp3, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
+    Q.load("doge2.png, asteroid.png, coin.png, smoke.png, ping.wav, boom1.wav, superman.png, thrust.wav", function() {
         var label = "Welcome ensign! Enter your name"
         if (player.name) {
             label = "Welcome back, " + player.name + "!"
