@@ -141,7 +141,7 @@ window.addEventListener("load", function (e) {
 
 
         Q.state.set('game_over', false);
-        Q.state.set('coins', 0);
+        Q.state.set('coins', parseInt(localStorage.getItem('coins')) || 0);
         Q.state.set("superman_sent", false);
         Q.state.set('player_alive', true);
 
@@ -356,6 +356,7 @@ window.addEventListener("load", function (e) {
 
                     Q.state.inc("score", 1000000);
                     Q.state.inc('coins', 1);
+                    localStorage.setItem('coins', Q.state.get('coins'));
 
                     generateSuchText(this.p.x / 2, this.p.y / 2);
 
@@ -473,7 +474,7 @@ window.addEventListener("load", function (e) {
                 "such speed",
                 "amaze",
             ] // Todo - Add way more
-        ,   wow_color_choices = ['red', 'yellow', 'green', 'blue', 'orange']
+        ,   wow_color_choices = ['#F12B6A', '#B47DFA', '#D9F57F', '#7FF0F5', '#F8A04F', '#45F76F']
         ,   color = wow_color_choices[Math.floor(Math.random() * wow_color_choices.length)]
         ,   text = wow_choices[Math.floor(Math.random() * wow_choices.length)];
 

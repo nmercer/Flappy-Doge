@@ -211,6 +211,7 @@ h2 {
     position: absolute;
     max-width: 400px;
     padding: 10px;
+    text-shadow: 0 1px 20px;
 }
 
 #address {
@@ -246,14 +247,15 @@ h2 {
 }
 #got-it {
     padding: 15px;
-    border: 3px solid #800080;
-    color: #800080;
+    border: 3px solid;
+    color: #C3FFFD;
     background: none;
     font-size: 20px;
     border-radius: 5px;
     width:100%;
-    
+    box-shadow: 0 0 10px;
     outline: none;
+    
     -webkit-animation: pressButton 1s infinite;
     -moz-animation: pressButton 1s infinite;
     animation: pressButton 1s infinite;
@@ -264,23 +266,19 @@ h2 {
 }
 
 
-
-
-
-
 @-webkit-keyframes pressButton {
-    0% {border-bottom: 10px solid purple; }
+    0% {border-bottom: 10px solid; }
     50% {border-bottom: 3px solid;  margin-top:10px;}
-    100% {border-bottom: 10px solid purple; }
+    100% {border-bottom: 10px solid; }
 }
 @-moz-keyframes pressButton{
-    0% {border-bottom: 10px solid purple; }
+    0% {border-bottom: 10px solid; }
     50% {border-bottom: 3px solid;  margin-top:10px;}
-    100% {border-bottom: 10px solid purple; }
+    100% {border-bottom: 10px solid; }
 }
 @keyframes pressButton{
-    0% {border-bottom: 10px solid purple; }
+    0% {border-bottom: 10px solid; }
     50% {border-bottom: 3px solid;  margin-top:10px;}
-    100% {border-bottom: 10px solid purple; }
+    100% {border-bottom: 10px solid; }
 }
 
