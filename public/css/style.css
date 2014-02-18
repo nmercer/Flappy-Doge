@@ -219,6 +219,9 @@ h2 {
 }
 
 #scoreboard {
+    
+}
+.modal {
     display: none;
     position: absolute;
     z-index: 18;
@@ -232,5 +235,52 @@ h2 {
     margin: auto;
     padding: 30px;
 }
+#help-text {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    margin: auto;
+    width: 50%;
+    height: 50%;
+    z-index: 40;
+}
+#got-it {
+    padding: 15px;
+    border: 3px solid #800080;
+    color: #800080;
+    background: none;
+    font-size: 20px;
+    border-radius: 5px;
+    width:100%;
+    
+    outline: none;
+    -webkit-animation: pressButton 1s infinite;
+    -moz-animation: pressButton 1s infinite;
+    animation: pressButton 1s infinite;
+}
 
+#scoreboard ul {
+    list-style: none;
+}
+
+
+
+
+
+
+@-webkit-keyframes pressButton {
+    0% {border-bottom: 10px solid purple; }
+    50% {border-bottom: 3px solid;  margin-top:10px;}
+    100% {border-bottom: 10px solid purple; }
+}
+@-moz-keyframes pressButton{
+    0% {border-bottom: 10px solid purple; }
+    50% {border-bottom: 3px solid;  margin-top:10px;}
+    100% {border-bottom: 10px solid purple; }
+}
+@keyframes pressButton{
+    0% {border-bottom: 10px solid purple; }
+    50% {border-bottom: 3px solid;  margin-top:10px;}
+    100% {border-bottom: 10px solid purple; }
+}
 
