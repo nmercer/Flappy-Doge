@@ -1,3 +1,4 @@
+// var prod = true;
 var prod = false;
 
 if(prod) {
@@ -49,6 +50,7 @@ window.addEventListener("load", function (e) {
 
     // Initialize Quintus
     var Q = window.Q = Quintus({ audioSupported: ['mp3', 'wav']})
+
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
         .setup({
             maximize: true
@@ -461,10 +463,10 @@ window.addEventListener("load", function (e) {
     var sy = new Array(100);
     var ss = new Array(100);
     
-    for(i=0; i < sx.length; i++ ){
-        sx[i]=Math.round(Math.random() * c.width);
-        sy[i]=Math.round(Math.random() * c.height);
-        ss[i]=Math.round(Math.random() * 1 + 1 );
+    for(i = 0; i < sx.length; i++ ){
+        sx[i] = Math.round(Math.random() * c.width);
+        sy[i] = Math.round(Math.random() * c.height);
+        ss[i] = Math.round(Math.random() * 1 + 2 );
     }
     
     function doGameLoop() {
@@ -594,9 +596,11 @@ window.addEventListener("load", function (e) {
                     Q.pauseGame();
                     Q.state.set('is_paused', true)
                 }
+                break;
             // Mute music on 'M'    
             case 77:
                 muteMusic();
+                break;
         }
     }
     
