@@ -218,8 +218,10 @@ window.addEventListener("load", function (e) {
 
             if(!Q.state.get('game_over')) {
                 Q.state.inc("score", 100);
-                $score.html(numberWithCommas(Q.state.get("score")));
             }
+
+            if(counter % 4 === 0 ) document.getElementById("score").innerHTML = numberWithCommas(Q.state.get("score"));
+
         });
     });
 
