@@ -122,9 +122,9 @@ h2 {
     background-color: #4C3566;
     height: 20px;
     width:0px;
-    -webkit-transition: all .2s;
-    -moz-transition: all .2s;
-    transition: all .2s;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    transition: all 1s;
 }
 #options {
     display: inline-block;
@@ -243,7 +243,7 @@ h2 {
 .modal {
     display: none;
     position: absolute;
-    z-index: 18;
+    z-index: 45;
     background: white;
     top: 0;
     bottom: 0;

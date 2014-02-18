@@ -280,7 +280,7 @@ window.addEventListener("load", function (e) {
                 this.p.angle = -10;
 
                 // Move Vertically
-                this.p.vy = -1000;
+                this.p.vy = -750;
 
                 // Engine 1
                 this.stage.insert(new Q.Smoke({
