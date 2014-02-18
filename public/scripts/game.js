@@ -1,3 +1,4 @@
+// var prod = true;
 var prod = false;
 
 if(prod) {
@@ -49,6 +50,7 @@ window.addEventListener("load", function (e) {
 
     // Initialize Quintus
     var Q = window.Q = Quintus({ audioSupported: ['mp3', 'wav']})
+
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
         .setup({
             maximize: true
@@ -140,12 +142,15 @@ window.addEventListener("load", function (e) {
         Q.state.set('game_over', false);
         Q.state.set('coins', 0);
         Q.state.set("superman_sent", false);
+        Q.state.set('player_alive', true);
 
         initTouch();
         
         $coin_count.find('span').text(Q.state.get("coins"))
 
         $score.text("0");
+
+
 
         stage.on("step",function() {
             counter += 1;
@@ -254,15 +259,17 @@ window.addEventListener("load", function (e) {
             if(Q.inputs['fire']) { 
                 Q.audio.play('thrust.wav');
 
+                // Tilt Doge
                 this.p.angle = -10;
 
+                // Move Vertically
                 this.p.vy = -1000;
 
                 // Engine 1
                 this.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
-                    scale: 3,
+                    scale: 5,
                     y: this.p.y + 50,
                     x: this.p.x - 50,
                     gravity: 0,
@@ -273,21 +280,29 @@ window.addEventListener("load", function (e) {
                 this.stage.insert(new Q.Smoke({
                     vx: Math.round(Math.random() * (500 - 400 ) + 400) * -1,
                     vy: Math.round(Math.random() * (300 - -100 ) + -100),
-                    scale: 2.9,
+                    scale: 4.9,
                     y: this.p.y + 45,
                     x: this.p.x - 15,
                     gravity: 0,
                     opacity: .4
                 }))
+
+            // Not Thrusting
             } else {
+                // Reset Doge Angle
                 this.p.angle = 0;
             }
+
+            // Kill player if doge falls off screen
             if(this.p.y - 100 > Q.height) {
+                Q.state.set('player_alive', false);
                 this.destroy();
                 Q.stageScene("startGame", 1, { label: "Whoops! You fell to your death." });
                 saveScore(player.name, Q.state.get('score'));
                 stopAsteroids();
             }
+
+            // Set Game ceiling
             if(this.p.y < 0) {
                 this.p.y = 0;
             }
@@ -367,6 +382,7 @@ window.addEventListener("load", function (e) {
 
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) {
+                    Q.state.set('player_alive', false);
                     Q.audio.play('boom1.wav', {loop: false});
                     Q.state.set("game_over", true);
                     Q.stageScene("startGame",1, { label: "You were obliterated!" }); 
@@ -407,6 +423,7 @@ window.addEventListener("load", function (e) {
 
             this.on("hit.sprite", function(collision) {
                 if(collision.obj.isA("Doge")) {
+                    Q.state.set('player_alive', false);
                     Q.audio.play('boom1.wav', {loop: false});
                     Q.state.set("game_over", true);
                     Q.stageScene("startGame",1, { label: "You Died" }); 
@@ -461,10 +478,10 @@ window.addEventListener("load", function (e) {
     var sy = new Array(100);
     var ss = new Array(100);
     
-    for(i=0; i < sx.length; i++ ){
-        sx[i]=Math.round(Math.random() * c.width);
-        sy[i]=Math.round(Math.random() * c.height);
-        ss[i]=Math.round(Math.random() * 1 + 1 );
+    for(i = 0; i < sx.length; i++ ){
+        sx[i] = Math.round(Math.random() * c.width);
+        sy[i] = Math.round(Math.random() * c.height);
+        ss[i] = Math.round(Math.random() * 1 + 2 );
     }
     
     function doGameLoop() {
@@ -535,19 +552,18 @@ window.addEventListener("load", function (e) {
     }
 
     function saveScore(name, score) {    
-        $.ajax({
-            type: "POST",
-            url: SAVE_URL,
-            dataType: 'json',
-            data: {'name':name, 'score': score},
-            success: function (response) {
-                if(response.status === 'success') {
-                }
-                else {
-                    // Todo - Some sort of error
-                }
-            }
-        });
+        if (!Q.state.get('player_alive')) {
+            console.log('saved!')
+            $.post(SAVE_URL, {'name':name, 'score': score}).
+                success(function (response) {
+                    if(response.status === 'success') {
+                    }
+                    else {
+                        // Todo - Some sort of error
+                    }
+                })
+            ;
+        }
     }
 
     // Todo - Orry - Needs to be called when we show scoreboard, not sure what you wannna do with that
@@ -588,9 +604,11 @@ window.addEventListener("load", function (e) {
                     Q.pauseGame();
                     Q.state.set('is_paused', true)
                 }
+                break;
             // Mute music on 'M'    
             case 77:
                 muteMusic();
+                break;
         }
     }
     
@@ -665,7 +683,15 @@ window.addEventListener("load", function (e) {
     // INIT GAME
     // ==============================================
 
-    Q.state.reset({ score: 0, game_over: false, is_paused: false, coins: 0, level: 1, superman_sent: false});
+    Q.state.reset({ 
+        score: 0, 
+        game_over: false, 
+        is_paused: false, 
+        coins: 0, 
+        level: 1, 
+        superman_sent: false,
+        player_alive: false
+    });
 
     setLoadingText()
 
