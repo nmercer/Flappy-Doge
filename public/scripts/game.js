@@ -85,7 +85,7 @@ window.addEventListener("load", function (e) {
 
             $('#game_over_score')
                 .show()
-                .text(numberWithCommas(stage.options.score));
+                .html(numberWithCommas(stage.options.score));
         }
 
         // RETURNING PLAYER 
