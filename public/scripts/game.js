@@ -666,8 +666,13 @@ window.addEventListener("load", function (e) {
         e.preventDefault();
         loadHighscores();
         $('#scoreboard').fadeToggle();
+    });
 
-    })
+    $('#view_credits').on('click', function(e) {
+        e.preventDefault();
+        loadHighscores();
+        $('#credits').fadeToggle();
+    });
 
     function initTouch() {
         $('#touch_this').on('click', function() {
