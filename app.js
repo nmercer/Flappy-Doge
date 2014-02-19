@@ -1,5 +1,5 @@
 // Todo - Setup some sort of prod BS
-prod =  true;
+prod =  0;
 
 /// SETUP
 // ===============================================
@@ -88,7 +88,7 @@ app.post('/scoreboard', function(req, res) {
 
 	console.log('Scoreboard Called');
 
-	res.app.get('connection').query( 'SELECT * FROM SCOREBOARD ORDER BY SCORE DESC LIMIT 10', function(err, rows) {
+	res.app.get('connection').query( 'SELECT * FROM SCOREBOARD ORDER BY SCORE DESC LIMIT 100', function(err, rows) {
     	if (err) {
       		res.send({'status':'error'});
     	} else {

@@ -1,4 +1,4 @@
-var prod = true;
+var prod = 0;
 
 if(prod) {
     var SAVE_URL = 'http://dogeinspace-env-qtuur5rufi.elasticbeanstalk.com/save'
@@ -79,6 +79,14 @@ window.addEventListener("load", function (e) {
         var current_score = Q.state.get('score')
 
         $action_text.text(stage.options.label)
+        
+        if(stage.options.score) {
+            console.log('tititit')
+
+            $('#game_over_score')
+                .show()
+                .text(stage.options.score);
+        }
 
         // RETURNING PLAYER 
         if (player.name) {            
@@ -405,7 +413,7 @@ window.addEventListener("load", function (e) {
                     Q.state.set('player_alive', false);
                     Q.audio.play('boom1.wav', {loop: false});
                     Q.state.set("game_over", true);
-                    Q.stageScene("startGame",1, { label: "You were obliterated!" }); 
+                    Q.stageScene("startGame",1, { label: "You were obliterated!", score: Q.state.get('score') }); 
                     collision.obj.destroy();
                     stopAsteroids();
                     saveScore(player.name, Q.state.get('score'));
